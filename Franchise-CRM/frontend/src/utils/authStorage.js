@@ -3,34 +3,53 @@ const SESSION_KEY = 'auth_session';
 const REMEMBER_DAYS = 30;
 const IDLE_LIMIT_MS = 30 * 1000; // 30 seconds
 
+// Reject sessions without a role or essential properties
+function isValidUser(user) {
+  return Boolean(user && user.email && user.role);
+}
+
 // ---------- Remember me (cookie, 30 days) ----------
 
 export function saveRememberCookie(user) {
-  const maxAge = REMEMBER_DAYS * 24 * 60 * 60; // seconds
-  document.cookie = `${COOKIE_NAME}=${encodeURIComponent(user.email)}; max-age=${maxAge}; path=/; SameSite=Lax`;
+  const maxAge = REMEMBER_DAYS * 24 * 60 * 60;
+  const value = encodeURIComponent(JSON.stringify(user));
+  document.cookie = `${COOKIE_NAME}=${value}; max-age=${maxAge}; path=/; SameSite=Lax`;
 }
 
 export function getRememberCookie() {
-  const match = document.cookie.match(new RegExp(`(^| )${COOKIE_NAME}=([^;]+)`));
-  return match ? { email: decodeURIComponent(match[2]) } : null;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${COOKIE_NAME}=([^;]*)`));
+  if (!match) return null;
+
+  try {
+    const user = JSON.parse(decodeURIComponent(match[1]));
+    if (isValidUser(user)) return user;
+    clearRememberCookie();
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 export function clearRememberCookie() {
   document.cookie = `${COOKIE_NAME}=; max-age=0; path=/`;
 }
 
-// ---------- Remember me illa (sessionStorage) ----------
+// ---------- Standard session (sessionStorage with 30s idle limit) ----------
 
 export function saveSessionUser(user) {
   sessionStorage.setItem(SESSION_KEY, JSON.stringify({ user, leftAt: null }));
 }
 
-// Idle time 30 seconds-ku mela aagirundha null return pannum
 export function getSessionUser() {
   const raw = sessionStorage.getItem(SESSION_KEY);
   if (!raw) return null;
 
   const { user, leftAt } = JSON.parse(raw);
+
+  if (!isValidUser(user)) {
+    clearSessionUser();
+    return null;
+  }
 
   if (leftAt && Date.now() - leftAt > IDLE_LIMIT_MS) {
     clearSessionUser();
@@ -39,13 +58,13 @@ export function getSessionUser() {
   return user;
 }
 
-// Page/tab-ah vittu poga poga time-ah save pannum
+// Record timestamp when page / tab loses focus
 export function setSessionLeftAt(value) {
   const raw = sessionStorage.getItem(SESSION_KEY);
   if (!raw) return;
 
   const data = JSON.parse(raw);
-  data.leftAt = value; // Date.now() or null
+  data.leftAt = value;
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
 }
 

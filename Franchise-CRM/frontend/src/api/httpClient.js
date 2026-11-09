@@ -7,7 +7,7 @@ export async function request(path, options = {}) {
       'Content-Type': 'application/json',
       ...(options.headers || {}),
     },
-    credentials: 'include', // cookie (httpOnly) backend set pannum, browser automatic-ah anuppum
+    credentials: 'include', // Include httpOnly cookies set by backend automatically in requests
     body: options.body ? JSON.stringify(options.body) : undefined,
   });
 

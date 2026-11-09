@@ -13,10 +13,9 @@ import {
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // Page load aagum bodhu: cookie-la irundha adhu, illana sessionStorage
   const [user, setUser] = useState(() => getRememberCookie() || getSessionUser());
 
-  // Tab vittu poi thirumba vandhaa check pannum
+  // Check idle timeout when returning after tab switch / visibility change
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
@@ -46,11 +45,23 @@ export function AuthProvider({ children }) {
     setUser(loggedInUser);
   };
 
+  // Update local user data after profile edits (synchronizes topbar and sidebar)
+  const updateUser = (patch) => {
+    const next = { ...user, ...patch };
+
+    if (getRememberCookie()) {
+      saveRememberCookie(next);
+    } else {
+      saveSessionUser(next);
+    }
+    setUser(next);
+  };
+
   const logout = async () => {
     try {
       await logoutApi();
     } catch (e) {
-      // Backend fail aanaalum frontend-la logout pannanum
+      // Clear frontend auth session even if backend logout fails
     }
     clearRememberCookie();
     clearSessionUser();
@@ -58,7 +69,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

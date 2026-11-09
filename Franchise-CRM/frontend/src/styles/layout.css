@@ -1,0 +1,44 @@
+/* =========================================================
+   LUXURY APP SHELL LAYOUT
+   ========================================================= */
+
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
+  background: var(--beige);
+  color: var(--ink);
+  font-family: var(--sans);
+  transition: grid-template-columns 0.28s var(--ease);
+}
+
+.app-shell.sidebar-collapsed {
+  grid-template-columns: 82px minmax(0, 1fr);
+}
+
+.app-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--beige);
+}
+
+.app-main {
+  padding: 32px clamp(20px, 3.5vw, 48px);
+  min-width: 0;
+  flex: 1;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 900px) {
+  .app-shell,
+  .app-shell.sidebar-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-main {
+    padding: 24px 16px;
+  }
+}

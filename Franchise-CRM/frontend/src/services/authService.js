@@ -1,16 +1,16 @@
 import { request } from '../api/httpClient';
-import { mockUsers, MOCK_OTP } from './mockData';
+import { mockUsers, MOCK_OTP } from '../mocks';
 
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
+const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
+const delay = (ms = 500) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const delay = (ms = 500) => new Promise((r) => setTimeout(r, ms));
-
+// ---------- LOGIN ----------
 export async function login(email, password, remember) {
   if (USE_MOCK) {
     await delay();
     const user = mockUsers.find((u) => u.email === email && u.password === password);
     if (!user) throw new Error('Email or password wrong');
-    return { email: user.email, username: user.username };
+    return { email: user.email, username: user.username, role: user.role };
   }
 
   return request('/auth/login', {
@@ -19,6 +19,7 @@ export async function login(email, password, remember) {
   });
 }
 
+// ---------- FORGOT PASSWORD: SEND OTP ----------
 export async function sendOtp(username, email) {
   if (USE_MOCK) {
     await delay(800);
@@ -34,10 +35,11 @@ export async function sendOtp(username, email) {
   });
 }
 
+// ---------- VERIFY OTP ----------
 export async function verifyOtp(username, email, otp) {
   if (USE_MOCK) {
     await delay();
-    if (otp !== MOCK_OTP) throw new Error('OTP wrongx');
+    if (otp !== MOCK_OTP) throw new Error('OTP wrong');
     return { verified: true };
   }
 
@@ -47,6 +49,7 @@ export async function verifyOtp(username, email, otp) {
   });
 }
 
+// ---------- RESET PASSWORD ----------
 export async function resetPassword(username, email, otp, newPassword) {
   if (USE_MOCK) {
     await delay();
@@ -59,6 +62,7 @@ export async function resetPassword(username, email, otp, newPassword) {
   });
 }
 
+// ---------- LOGOUT ----------
 export async function logout() {
   if (USE_MOCK) {
     await delay(200);
