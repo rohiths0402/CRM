@@ -1,0 +1,134 @@
+/* =========================================================
+   LUXURY DASHBOARD OVERVIEW & STAT TILES
+   ========================================================= */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.stat-tile {
+  position: relative;
+  padding: 24px 26px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease);
+  overflow: hidden;
+}
+
+.stat-tile::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary-gradient);
+  opacity: 0.8;
+  transition: height 0.2s, opacity 0.2s;
+}
+
+.stat-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-tile:hover::before {
+  height: 4px;
+  opacity: 1;
+}
+
+.stat-label {
+  font-size: 12.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+}
+
+.stat-value {
+  margin-top: 10px;
+  font-family: var(--sans);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--brown);
+  line-height: 1.1;
+}
+
+.stat-hint {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Dashboard main 2-column grid */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1.65fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* Upcoming events list in dashboard */
+.event-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 16px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.event-list li:hover {
+  background: #ffffff;
+  border-color: var(--tan);
+  box-shadow: var(--shadow-xs);
+}
+
+.event-list li div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.event-list li strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.event-list li span {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
