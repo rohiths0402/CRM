@@ -120,8 +120,8 @@ const LoginPage = () => {
               to="/"
               className="flex items-center gap-2 text-sm font-medium text-muted transition hover:text-foreground"
             >
-              <ArrowLeft className="size-4" />
-              Back to home
+              {/* <ArrowLeft className="size-4" />
+              Back to home */}
             </Link>
             <ThemeToggle />
           </div>

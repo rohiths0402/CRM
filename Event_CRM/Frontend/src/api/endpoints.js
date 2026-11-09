@@ -3,6 +3,14 @@ export const BASE_URL =
 
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 
+const GEO_BASE =
+  "https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@2884453/geojson";
+
+export const GEO_URLS = {
+  india: `${GEO_BASE}/india.geojson`,
+  state: (slug) => `${GEO_BASE}/states/${slug}.geojson`,
+};
+
 export const ENDPOINTS = {
   auth: {
     login: "/auth/login",
@@ -15,5 +23,8 @@ export const ENDPOINTS = {
   },
   dashboard: {
     summary: "/dashboard/summary",
+  },
+  events: {
+    locations: "/events/locations",
   },
 };
