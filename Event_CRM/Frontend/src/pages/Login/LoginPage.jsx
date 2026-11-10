@@ -226,13 +226,13 @@ const LoginPage = () => {
               </Button>
             </form>
 
-            <div className="my-6 flex items-center gap-4 text-xs text-muted">
+            {/* <div className="my-6 flex items-center gap-4 text-xs text-muted">
               <span className="h-px flex-1 bg-line" />
               or
               <span className="h-px flex-1 bg-line" />
-            </div>
+            </div> */}
 
-            <Button
+            {/* <Button
               variant="ghost"
               className="h-14 w-full text-base"
               loading={pending === "google"}
@@ -240,7 +240,7 @@ const LoginPage = () => {
             >
               {pending !== "google" && <FcGoogle className="size-5" />}
               Continue with Gmail
-            </Button>
+            </Button> */}
 
             {USE_MOCK && (
               <div className="mt-8">

@@ -7,7 +7,7 @@ const Logo = ({ className = "" }) => (
       <InfinityIcon className="size-5" strokeWidth={2.5} />
     </span>
     <span className="font-display text-xl font-semibold tracking-wide">
-      LOOP
+      Event CRM
     </span>
   </Link>
 );

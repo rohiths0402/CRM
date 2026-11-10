@@ -26,5 +26,14 @@ export const ENDPOINTS = {
   },
   events: {
     locations: "/events/locations",
+    list: "/events",
+    detail: (id) => `/events/${id}`,
+    status: (id) => `/events/${id}/status`,
+  },
+  venues: {
+    list: "/venues",
+    detail: (id) => `/venues/${id}`,
+    zones: (id) => `/venues/${id}/zones`,
+    zone: (id, zoneId) => `/venues/${id}/zones/${zoneId}`,
   },
 };

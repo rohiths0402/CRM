@@ -10,6 +10,7 @@ export const getInitialTheme = () => {
 
 export const applyTheme = (theme) => {
   document.documentElement.setAttribute("data-theme", theme);
+  document.documentElement.style.colorScheme = theme;
 };
 
 export const saveTheme = (theme) => {

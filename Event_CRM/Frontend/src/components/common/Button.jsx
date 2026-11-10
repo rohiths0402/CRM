@@ -4,6 +4,7 @@ const styles = {
   primary:
     "bg-gradient-to-r from-accent to-primary text-on-primary shadow-[0_12px_32px_-12px_var(--primary)] hover:brightness-110",
   ghost: "border border-line bg-elevated text-foreground hover:bg-card",
+  danger: "bg-rose-500 text-white hover:bg-rose-600",
 };
 
 const Button = ({

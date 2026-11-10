@@ -1,4 +1,4 @@
-import { mockDashboardSummary, mockEventLocations } from "./mockData";
+import { mockEvents, mockPendingProposals } from "./mockData";
 import { EVENT_STATUS } from "../constants/eventStatus";
 import { formatCurrency, formatDate, formatNumber } from "../utils/format";
 
@@ -28,7 +28,7 @@ const buildTrend = (ticketsToday) => {
 };
 
 export const buildDashboardSummary = (eventId) => {
-  const { events } = mockEventLocations;
+  const events = [...mockEvents];
   const selected =
     eventId === "all"
       ? null
@@ -83,6 +83,6 @@ export const buildDashboardSummary = (eventId) => {
     ],
     salesTrend: buildTrend(Math.round(sold * SHARE_SOLD_TODAY)),
     liveEvent: events.find((event) => event.status === "ONGOING") || null,
-    pendingProposals: mockDashboardSummary.pendingProposals,
+    pendingProposals: mockPendingProposals,
   };
 };

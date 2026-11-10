@@ -41,7 +41,7 @@ const Topbar = ({ onMenuClick }) => {
         {USE_MOCK && <RoleSwitcher />}
         <ThemeToggle />
 
-        <div className="hidden items-center gap-3 rounded-full border border-line bg-card py-1.5 pl-1.5 pr-4 md:flex">
+        {/* <div className="hidden items-center gap-3 rounded-full border border-line bg-card py-1.5 pl-1.5 pr-4 md:flex">
           <span className="grid size-8 place-items-center rounded-full bg-gradient-to-br from-accent to-primary text-xs font-bold text-on-primary">
             {getInitials(user.name)}
           </span>
@@ -49,7 +49,7 @@ const Topbar = ({ onMenuClick }) => {
             <p className="text-sm font-semibold">{user.name}</p>
             <p className="text-xs text-muted">{ROLE_LABELS[user.role]}</p>
           </div>
-        </div>
+        </div> */}
 
         <button
           type="button"

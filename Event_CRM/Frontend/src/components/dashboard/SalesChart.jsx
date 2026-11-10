@@ -12,27 +12,30 @@ import { useTheme } from "../../context/ThemeContext";
 import { formatNumber } from "../../utils/format";
 import { readThemeColors } from "../../utils/themeColors";
 
-const SalesChart = ({ data }) => {
+const SalesChart = ({ data, scope }) => {
   const { theme } = useTheme();
   const colors = useMemo(() => readThemeColors(), [theme]);
 
   if (!data)
-    return <div className="h-[26rem] animate-pulse rounded-3xl bg-card" />;
+    return <div className="h-[28rem] animate-pulse rounded-3xl bg-card" />;
 
   const total = data.reduce((sum, point) => sum + point.tickets, 0);
 
   return (
     <div className="rounded-3xl border border-line bg-card p-6">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold">Live ticket sales</h3>
-          <p className="text-sm text-muted">Tickets sold per hour today</p>
+          <h3 className="text-lg font-semibold">Tickets sold today</h3>
+          <p className="mt-1 text-sm text-muted">
+            Hour by hour for{" "}
+            <span className="font-semibold text-foreground">{scope.label}</span>
+          </p>
         </div>
         <div className="text-right">
           <p className="font-display text-3xl font-semibold">
             {formatNumber(total)}
           </p>
-          <p className="text-xs text-muted">tickets today</p>
+          <p className="text-xs text-muted">tickets sold today</p>
         </div>
       </div>
 
@@ -73,6 +76,7 @@ const SalesChart = ({ data }) => {
               tickLine={false}
             />
             <Tooltip
+              formatter={(value) => [`${formatNumber(value)} tickets`, "Sold"]}
               contentStyle={{
                 background: colors.elevated,
                 border: `1px solid ${colors.line}`,
@@ -94,6 +98,10 @@ const SalesChart = ({ data }) => {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+
+      <p className="mt-3 text-xs text-muted">
+        Each point shows the tickets sold in that one hour.
+      </p>
     </div>
   );
 };

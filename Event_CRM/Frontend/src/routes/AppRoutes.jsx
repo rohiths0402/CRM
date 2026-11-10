@@ -1,17 +1,29 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import LandingPage from "../pages/Landing/LandingPage";
 import LoginPage from "../pages/Login/LoginPage";
 import DashboardPage from "../pages/Dashboard/DashboardPage";
+import EventsPage from "../pages/Events/EventsPage";
+import VenuesPage from "../pages/Venues/VenuesPage";
 import ModulePlaceholderPage from "../pages/ModulePlaceholder/ModulePlaceholderPage";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestRoute from "./GuestRoute";
 import { MODULES } from "../constants/modules";
+import { ROLE_ACCESS } from "../constants/roles";
 
-const placeholderModules = MODULES.filter((item) => item.key !== "dashboard");
+const builtModules = ["dashboard", "events", "venues"];
+const placeholderModules = MODULES.filter(
+  (item) => !builtModules.includes(item.key),
+);
+
+const rolesFor = (moduleKey) =>
+  Object.entries(ROLE_ACCESS)
+    .filter(([, keys]) => keys.includes(moduleKey))
+    .map(([role]) => role);
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Navigate to="/login" replace />} />
+    <Route path="/" element={<LandingPage />} />
 
     <Route element={<GuestRoute />}>
       <Route path="/login" element={<LoginPage />} />
@@ -20,6 +32,15 @@ const AppRoutes = () => (
     <Route element={<ProtectedRoute />}>
       <Route element={<DashboardLayout />}>
         <Route path="/dashboard" element={<DashboardPage />} />
+
+        <Route element={<ProtectedRoute allowedRoles={rolesFor("events")} />}>
+          <Route path="/events" element={<EventsPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={rolesFor("venues")} />}>
+          <Route path="/venues" element={<VenuesPage />} />
+        </Route>
+
         {placeholderModules.map((item) => (
           <Route
             key={item.key}
@@ -30,7 +51,7 @@ const AppRoutes = () => (
       </Route>
     </Route>
 
-    <Route path="*" element={<Navigate to="/login" replace />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
 );
 
