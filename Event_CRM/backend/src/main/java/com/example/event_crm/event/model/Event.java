@@ -20,11 +20,12 @@ public class Event {
     private String category;
     private String ageRating;
 
-
     private String status;
 
     @Column(nullable = false)
     private Long venueId;
+
+    private String headliner;
 
     private LocalDate eventDate;
     private LocalTime gatesOpen;
@@ -36,6 +37,9 @@ public class Event {
 
     private long targetBudget;
     private long projectedRevenue;
+    private long ticketsSold;
+    private long grossRevenue;
+    private long sponsorCount;
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() { return id; }
@@ -49,6 +53,8 @@ public class Event {
     public void setStatus(String status) { this.status = status; }
     public Long getVenueId() { return venueId; }
     public void setVenueId(Long venueId) { this.venueId = venueId; }
+    public String getHeadliner() { return headliner; }
+    public void setHeadliner(String headliner) { this.headliner = headliner; }
     public LocalDate getEventDate() { return eventDate; }
     public void setEventDate(LocalDate eventDate) { this.eventDate = eventDate; }
     public LocalTime getGatesOpen() { return gatesOpen; }
@@ -63,5 +69,11 @@ public class Event {
     public void setTargetBudget(long targetBudget) { this.targetBudget = targetBudget; }
     public long getProjectedRevenue() { return projectedRevenue; }
     public void setProjectedRevenue(long projectedRevenue) { this.projectedRevenue = projectedRevenue; }
+    public long getTicketsSold() { return ticketsSold; }
+    public void setTicketsSold(long ticketsSold) { this.ticketsSold = ticketsSold; }
+    public long getGrossRevenue() { return grossRevenue; }
+    public void setGrossRevenue(long grossRevenue) { this.grossRevenue = grossRevenue; }
+    public long getSponsorCount() { return sponsorCount; }
+    public void setSponsorCount(long sponsorCount) { this.sponsorCount = sponsorCount; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 }
