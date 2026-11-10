@@ -44,4 +44,11 @@ export const ENDPOINTS = {
     promo: (id) => `/ticketing/promos/${id}`,
     promoStatus: (id) => `/ticketing/promos/${id}/status`,
   },
+  sponsors: {
+    list: "/sponsors",
+    detail: (id) => `/sponsors/${id}`,
+    deliverables: (id) => `/sponsors/${id}/deliverables`,
+    deliverable: (id, deliverableId) =>
+      `/sponsors/${id}/deliverables/${deliverableId}`,
+  },
 };

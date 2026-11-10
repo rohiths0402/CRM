@@ -44,7 +44,7 @@ const TicketingPage = () => {
   const [busy, setBusy] = useState(false);
   const [busyId, setBusyId] = useState(null);
 
-  const canDelete = user.role === ROLES.ADMIN;
+  const canDelete = [ROLES.SUPER_ADMIN, ROLES.ADMIN].includes(user.role);
 
   useEffect(() => {
     Promise.all([

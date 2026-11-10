@@ -2,6 +2,7 @@ import { http } from "../httpClient";
 import { ENDPOINTS, USE_MOCK } from "../endpoints";
 import { mockDelay, mockEvents, mockVenues } from "../../mocks/mockData";
 import { mockPromos, mockTiers } from "../../mocks/mockTicketing";
+import { mockSponsors } from "../../mocks/mockSponsors";
 
 const LIVE_STATUSES = ["TICKETS_LIVE", "ONGOING"];
 
@@ -120,6 +121,11 @@ const remove = async (id) => {
   if (mockEvents[index].ticketsSold > 0) {
     throw new Error(
       "This event has sold tickets. Move it to Wrap instead of deleting it.",
+    );
+  }
+  if (mockSponsors.some((sponsor) => sponsor.eventId === id)) {
+    throw new Error(
+      "This event has sponsor contracts. Remove them in Sponsors & Partners first.",
     );
   }
   mockEvents.splice(index, 1);
