@@ -34,7 +34,7 @@ const VenuesPage = () => {
   const [deletingZone, setDeletingZone] = useState(null);
   const [busy, setBusy] = useState(false);
 
-  const canDelete = user.role === ROLES.ADMIN;
+  const canDelete = [ROLES.SUPER_ADMIN, ROLES.ADMIN].includes(user.role);
 
   useEffect(() => {
     Promise.all([venueService.list(), eventService.list()])
