@@ -4,10 +4,21 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public record VenueRequest(
-        @NotBlank(message = "Enter the venue name.") String name,
-        @NotBlank(message = "Enter the city.") String city,
+        @NotBlank(message = "Venue name is required") String name,
+        String type,
+        @NotBlank(message = "City is required") String city,
+        String stateSlug,
         String address,
-        @Min(value = 1, message = "Capacity must be more than zero.") int capacity,
-        @Min(0) int parkingCapacity,
-        @Min(0) long baseRentalCost) {
+        Double lat,
+        Double lng,
+        @Min(value = 1, message = "Capacity must be at least 1") int capacity,
+        int parkingStalls,
+        long baseRent,
+        int greenRooms,
+        boolean powerBackup,
+        boolean wheelchairAccess,
+        String fireNocValidTill,
+        String contactName,
+        String contactPhone
+) {
 }

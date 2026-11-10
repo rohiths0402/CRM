@@ -91,7 +91,7 @@ public class ProposalService {
         Event event = new Event();
         event.setTitle(proposal.getTitle());
         event.setCategory(proposal.getEventType());
-        event.setStatus("Draft");
+        event.setStatus("DRAFT");
         event.setVenueId(venueId);
         event.setEventDate(proposal.getExpectedDate());
         event.setHeadliner(proposal.getCompanyName());
