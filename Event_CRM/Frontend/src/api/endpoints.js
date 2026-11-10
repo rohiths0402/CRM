@@ -36,4 +36,12 @@ export const ENDPOINTS = {
     zones: (id) => `/venues/${id}/zones`,
     zone: (id, zoneId) => `/venues/${id}/zones/${zoneId}`,
   },
+  ticketing: {
+    tiers: "/ticketing/tiers",
+    tier: (id) => `/ticketing/tiers/${id}`,
+    tierStatus: (id) => `/ticketing/tiers/${id}/status`,
+    promos: "/ticketing/promos",
+    promo: (id) => `/ticketing/promos/${id}`,
+    promoStatus: (id) => `/ticketing/promos/${id}/status`,
+  },
 };

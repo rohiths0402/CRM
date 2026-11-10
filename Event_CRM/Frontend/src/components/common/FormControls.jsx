@@ -1,7 +1,7 @@
 import { ChevronDown } from "lucide-react";
 
 const controlClass = (error) =>
-  `h-12 w-full rounded-xl border bg-card px-4 text-sm outline-none transition placeholder:text-muted/60 focus:border-primary focus:ring-4 focus:ring-primary/15 ${
+  `h-12 w-full rounded-xl border bg-card px-4 text-sm outline-none transition placeholder:text-muted/60 focus:border-primary focus:ring-4 focus:ring-primary/15 disabled:cursor-not-allowed disabled:opacity-60 ${
     error ? "border-rose-500" : "border-line"
   }`;
 

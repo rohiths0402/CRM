@@ -1,3 +1,4 @@
+import "./mockTicketing";
 import { mockEvents, mockPendingProposals } from "./mockData";
 import { EVENT_STATUS } from "../constants/eventStatus";
 import { formatCurrency, formatDate, formatNumber } from "../utils/format";

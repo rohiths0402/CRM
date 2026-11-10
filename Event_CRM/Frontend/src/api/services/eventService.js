@@ -1,6 +1,20 @@
 import { http } from "../httpClient";
 import { ENDPOINTS, USE_MOCK } from "../endpoints";
 import { mockDelay, mockEvents, mockVenues } from "../../mocks/mockData";
+import { mockPromos, mockTiers } from "../../mocks/mockTicketing";
+
+const LIVE_STATUSES = ["TICKETS_LIVE", "ONGOING"];
+
+const removeWhere = (list, test) => {
+  for (let index = list.length - 1; index >= 0; index -= 1) {
+    if (test(list[index])) list.splice(index, 1);
+  }
+};
+
+const releasedSeats = (eventId) =>
+  mockTiers
+    .filter((tier) => tier.eventId === eventId)
+    .reduce((sum, tier) => sum + tier.quota, 0);
 
 const resolveVenue = (payload) => {
   const venue = mockVenues.find((item) => item.id === Number(payload.venueId));
@@ -70,6 +84,12 @@ const update = async (id, payload) => {
   if (index < 0) throw new Error("Event not found");
   const venueFields = resolveVenue(payload);
   ensureVenueFree(payload, id);
+  const released = releasedSeats(id);
+  if (Number(payload.capacity) < released) {
+    throw new Error(
+      `Ticket tiers already release ${released.toLocaleString("en-IN")} seats, so capacity cannot be lower`,
+    );
+  }
   mockEvents[index] = { ...mockEvents[index], ...payload, ...venueFields };
   return mockEvents[index];
 };
@@ -80,6 +100,15 @@ const updateStatus = async (id, status) => {
   const index = mockEvents.findIndex((item) => item.id === id);
   if (index < 0) throw new Error("Event not found");
   mockEvents[index] = { ...mockEvents[index], status };
+
+  if (!LIVE_STATUSES.includes(status)) {
+    mockTiers.forEach((tier, tierIndex) => {
+      if (tier.eventId === id && tier.status === "ACTIVE") {
+        mockTiers[tierIndex] = { ...tier, status: "PAUSED" };
+      }
+    });
+  }
+
   return mockEvents[index];
 };
 
@@ -94,6 +123,8 @@ const remove = async (id) => {
     );
   }
   mockEvents.splice(index, 1);
+  removeWhere(mockTiers, (tier) => tier.eventId === id);
+  removeWhere(mockPromos, (promo) => promo.eventId === id && promo.used === 0);
   return { message: "Event deleted" };
 };
 
