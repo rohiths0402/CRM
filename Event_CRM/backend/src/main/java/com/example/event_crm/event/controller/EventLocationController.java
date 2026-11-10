@@ -18,6 +18,6 @@ public class EventLocationController {
 
     @GetMapping("/locations")
     public EventLocationsResponse locations() {
-        return new EventLocationsResponse(eventLocationService.all());
+        return new EventLocationsResponse(eventLocationService.withCoordinates());
     }
 }

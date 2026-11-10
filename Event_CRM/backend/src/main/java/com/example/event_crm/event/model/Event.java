@@ -19,22 +19,24 @@ public class Event {
 
     private String category;
     private String ageRating;
-
     private String status;
+    private String headliner;
+
+    @Column(length = 1000)
+    private String description;
 
     @Column(nullable = false)
     private Long venueId;
-
-    private String headliner;
 
     private LocalDate eventDate;
     private LocalTime gatesOpen;
     private LocalTime showStart;
     private LocalTime curfewTime;
 
-    @Column(length = 500)
+    @Column(columnDefinition = "LONGTEXT")
     private String bannerUrl;
 
+    private int capacity;
     private long targetBudget;
     private long projectedRevenue;
     private long ticketsSold;
@@ -51,10 +53,12 @@ public class Event {
     public void setAgeRating(String ageRating) { this.ageRating = ageRating; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
-    public Long getVenueId() { return venueId; }
-    public void setVenueId(Long venueId) { this.venueId = venueId; }
     public String getHeadliner() { return headliner; }
     public void setHeadliner(String headliner) { this.headliner = headliner; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public Long getVenueId() { return venueId; }
+    public void setVenueId(Long venueId) { this.venueId = venueId; }
     public LocalDate getEventDate() { return eventDate; }
     public void setEventDate(LocalDate eventDate) { this.eventDate = eventDate; }
     public LocalTime getGatesOpen() { return gatesOpen; }
@@ -65,6 +69,8 @@ public class Event {
     public void setCurfewTime(LocalTime curfewTime) { this.curfewTime = curfewTime; }
     public String getBannerUrl() { return bannerUrl; }
     public void setBannerUrl(String bannerUrl) { this.bannerUrl = bannerUrl; }
+    public int getCapacity() { return capacity; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
     public long getTargetBudget() { return targetBudget; }
     public void setTargetBudget(long targetBudget) { this.targetBudget = targetBudget; }
     public long getProjectedRevenue() { return projectedRevenue; }

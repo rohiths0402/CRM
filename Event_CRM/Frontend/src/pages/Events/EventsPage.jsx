@@ -39,7 +39,7 @@ const EventsPage = () => {
   const [deleting, setDeleting] = useState(null);
   const [deleteBusy, setDeleteBusy] = useState(false);
 
-  const canDelete = user.role === ROLES.ADMIN;
+const canDelete = [ROLES.SUPER_ADMIN, ROLES.ADMIN].includes(user.role);
 
   useEffect(() => {
     Promise.all([eventService.list(), venueService.list()])

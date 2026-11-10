@@ -31,32 +31,55 @@ public class EventLocationService {
 
         List<EventLocation> result = new ArrayList<>();
         for (Event event : eventRepository.findAll()) {
-            Venue venue = venueById.get(event.getVenueId());
-            if (venue == null || venue.getLatitude() == null || venue.getLongitude() == null) {
-                continue;
-            }
-
-            result.add(new EventLocation(
-                    event.getId(),
-                    event.getTitle(),
-                    event.getCategory(),
-                    statusCode(event.getStatus()),
-                    slug(venue.getState()),
-                    venue.getCity(),
-                    venue.getName(),
-                    venue.getLatitude(),
-                    venue.getLongitude(),
-                    event.getEventDate() == null ? null : event.getEventDate().toString(),
-                    event.getGatesOpen() == null ? null : event.getGatesOpen().toString(),
-                    event.getShowStart() == null ? null : event.getShowStart().toString(),
-                    venue.getCapacity(),
-                    event.getTicketsSold(),
-                    event.getGrossRevenue(),
-                    event.getSponsorCount(),
-                    event.getHeadliner()
-            ));
+            result.add(toShape(event, venueById.get(event.getVenueId())));
         }
         return result;
+    }
+
+    public List<EventLocation> withCoordinates() {
+        List<EventLocation> result = new ArrayList<>();
+        for (EventLocation event : all()) {
+            if (event.lat() != 0 || event.lng() != 0) {
+                result.add(event);
+            }
+        }
+        return result;
+    }
+
+    public EventLocation toShape(Event event, Venue venue) {
+        double lat = 0;
+        double lng = 0;
+        if (venue != null && venue.getLatitude() != null && venue.getLongitude() != null) {
+            lat = venue.getLatitude();
+            lng = venue.getLongitude();
+        }
+
+        return new EventLocation(
+                event.getId(),
+                empty(event.getTitle()),
+                empty(event.getCategory()),
+                empty(event.getAgeRating()),
+                statusCode(event.getStatus()),
+                empty(event.getHeadliner()),
+                empty(event.getDescription()),
+                event.getVenueId(),
+                venue == null ? "" : empty(venue.getName()),
+                venue == null ? "" : empty(venue.getCity()),
+                venue == null ? "" : empty(venue.getStateSlug()),
+                lat,
+                lng,
+                event.getEventDate() == null ? "" : event.getEventDate().toString(),
+                TimeText.format(event.getGatesOpen()),
+                TimeText.format(event.getShowStart()),
+                TimeText.format(event.getCurfewTime()),
+                event.getCapacity(),
+                event.getTicketsSold(),
+                event.getGrossRevenue(),
+                event.getSponsorCount(),
+                event.getTargetBudget(),
+                event.getProjectedRevenue(),
+                empty(event.getBannerUrl())
+        );
     }
 
     private String statusCode(String status) {
@@ -66,10 +89,7 @@ public class EventLocationService {
         return status.trim().toUpperCase().replace(' ', '_');
     }
 
-    private String slug(String state) {
-        if (state == null) {
-            return "";
-        }
-        return state.trim().toLowerCase().replace(' ', '-');
+    private String empty(String value) {
+        return value == null ? "" : value;
     }
 }
