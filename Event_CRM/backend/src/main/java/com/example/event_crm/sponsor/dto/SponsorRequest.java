@@ -10,9 +10,7 @@ public record SponsorRequest(
         String contactName,
         String contactEmail,
         String contactPhone,
-        String contractFileName,
-        Long contractFileSize,
-        String contractFileUrl,
+        ContractFileInfo contractFile,
         Boolean addStandardDeliverables
 ) {
 }

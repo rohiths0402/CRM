@@ -3,6 +3,7 @@ package com.example.event_crm.sponsor.service;
 import com.example.event_crm.event.model.Event;
 import com.example.event_crm.event.repository.EventRepository;
 import com.example.event_crm.event.service.EventTotalsService;
+import com.example.event_crm.sponsor.dto.ContractFileInfo;
 import com.example.event_crm.sponsor.dto.DeliverableRequest;
 import com.example.event_crm.sponsor.dto.DeliverableResponse;
 import com.example.event_crm.sponsor.dto.SponsorRequest;
@@ -155,7 +156,8 @@ public class SponsorService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Amount received cannot be more than the contract value, Rs " + request.contractValue());
         }
-        if (request.contractFileSize() != null && request.contractFileSize() > MAX_CONTRACT_BYTES) {
+        ContractFileInfo file = request.contractFile();
+        if (file != null && file.size() != null && file.size() > MAX_CONTRACT_BYTES) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Contract PDF must be 3 MB or smaller");
         }
 
@@ -208,23 +210,19 @@ public class SponsorService {
                 "Logo on website and ticket pages",
                 "Social media announcement",
                 "Banner placement at venue"));
-        List<Integer> daysBefore = new ArrayList<>(List.of(14, 7, 2));
 
         if ("TITLE".equals(sponsor.getTier())) {
             texts.add("Brand name in event title");
-            daysBefore.add(21);
             texts.add("Stage branding");
-            daysBefore.add(1);
         } else if ("POWERED_BY".equals(sponsor.getTier())) {
             texts.add("Stage mention by the host");
-            daysBefore.add(0);
         }
 
         for (int i = 0; i < texts.size(); i++) {
             SponsorDeliverable deliverable = new SponsorDeliverable();
             deliverable.setSponsorId(sponsor.getId());
             deliverable.setText(texts.get(i));
-            deliverable.setDueDate(eventDate.minusDays(daysBefore.get(i)));
+            deliverable.setDueDate(eventDate.minusDays((texts.size() - i) * 2L));
             deliverable.setStatus("PENDING");
             deliverableRepository.save(deliverable);
         }
@@ -239,9 +237,17 @@ public class SponsorService {
         sponsor.setContactName(request.contactName());
         sponsor.setContactEmail(request.contactEmail());
         sponsor.setContactPhone(request.contactPhone());
-        sponsor.setContractFileName(request.contractFileName());
-        sponsor.setContractFileSize(request.contractFileSize());
-        sponsor.setContractFileUrl(request.contractFileUrl());
+
+        ContractFileInfo file = request.contractFile();
+        if (file == null || file.name() == null || file.name().isBlank()) {
+            sponsor.setContractFileName(null);
+            sponsor.setContractFileSize(null);
+            sponsor.setContractFileUrl(null);
+        } else {
+            sponsor.setContractFileName(file.name());
+            sponsor.setContractFileSize(file.size());
+            sponsor.setContractFileUrl(file.url());
+        }
     }
 
     private Sponsor find(Long id) {
@@ -281,6 +287,12 @@ public class SponsorService {
                     item.getStatus()));
         }
 
+        ContractFileInfo file = null;
+        if (sponsor.getContractFileName() != null && !sponsor.getContractFileName().isBlank()) {
+            file = new ContractFileInfo(sponsor.getContractFileName(), sponsor.getContractFileSize(),
+                    sponsor.getContractFileUrl());
+        }
+
         return new SponsorResponse(
                 sponsor.getId(),
                 sponsor.getEventId(),
@@ -296,9 +308,7 @@ public class SponsorService {
                 text(sponsor.getContactName()),
                 text(sponsor.getContactEmail()),
                 text(sponsor.getContactPhone()),
-                text(sponsor.getContractFileName()),
-                sponsor.getContractFileSize(),
-                text(sponsor.getContractFileUrl()),
+                file,
                 deliverables);
     }
 }

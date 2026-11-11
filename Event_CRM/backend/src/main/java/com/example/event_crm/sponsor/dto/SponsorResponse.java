@@ -17,9 +17,7 @@ public record SponsorResponse(
         String contactName,
         String contactEmail,
         String contactPhone,
-        String contractFileName,
-        Long contractFileSize,
-        String contractFileUrl,
+        ContractFileInfo contractFile,
         List<DeliverableResponse> deliverables
 ) {
 }
