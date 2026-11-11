@@ -6,6 +6,7 @@ import EventsPage from "../pages/Events/EventsPage";
 import VenuesPage from "../pages/Venues/VenuesPage";
 import TicketingPage from "../pages/Ticketing/TicketingPage";
 import SponsorsPage from "../pages/Sponsors/SponsorsPage";
+import LineupPage from "../pages/Lineup/LineupPage";
 import ModulePlaceholderPage from "../pages/ModulePlaceholder/ModulePlaceholderPage";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
@@ -13,7 +14,14 @@ import GuestRoute from "./GuestRoute";
 import { MODULES } from "../constants/modules";
 import { ROLE_ACCESS } from "../constants/roles";
 
-const builtModules = ["dashboard", "events", "venues", "ticketing", "sponsors"];
+const builtModules = [
+  "dashboard",
+  "events",
+  "venues",
+  "ticketing",
+  "sponsors",
+  "artists",
+];
 const placeholderModules = MODULES.filter(
   (item) => !builtModules.includes(item.key),
 );
@@ -51,6 +59,10 @@ const AppRoutes = () => (
 
         <Route element={<ProtectedRoute allowedRoles={rolesFor("sponsors")} />}>
           <Route path="/sponsors" element={<SponsorsPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={rolesFor("artists")} />}>
+          <Route path="/artists" element={<LineupPage />} />
         </Route>
 
         {placeholderModules.map((item) => (

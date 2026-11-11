@@ -51,4 +51,11 @@ export const ENDPOINTS = {
     deliverable: (id, deliverableId) =>
       `/sponsors/${id}/deliverables/${deliverableId}`,
   },
+  lineups: {
+    list: "/lineups",
+    detail: (id) => `/lineups/${id}`,
+    rider: (id) => `/lineups/${id}/rider`,
+    riderItems: (id) => `/lineups/${id}/rider-items`,
+    riderItem: (id, itemId) => `/lineups/${id}/rider-items/${itemId}`,
+  },
 };
