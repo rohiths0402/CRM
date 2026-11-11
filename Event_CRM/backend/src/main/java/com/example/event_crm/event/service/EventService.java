@@ -4,6 +4,7 @@ import com.example.event_crm.event.dto.EventLocation;
 import com.example.event_crm.event.dto.EventRequest;
 import com.example.event_crm.event.model.Event;
 import com.example.event_crm.event.repository.EventRepository;
+import com.example.event_crm.sponsor.repository.SponsorRepository;
 import com.example.event_crm.venue.model.Venue;
 import com.example.event_crm.venue.repository.VenueRepository;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,14 @@ public class EventService {
     private final EventRepository eventRepository;
     private final VenueRepository venueRepository;
     private final EventLocationService eventLocationService;
+    private final SponsorRepository sponsorRepository;
 
     public EventService(EventRepository eventRepository, VenueRepository venueRepository,
-                        EventLocationService eventLocationService) {
+                        EventLocationService eventLocationService, SponsorRepository sponsorRepository) {
         this.eventRepository = eventRepository;
         this.venueRepository = venueRepository;
         this.eventLocationService = eventLocationService;
+        this.sponsorRepository = sponsorRepository;
     }
 
     public List<EventLocation> list() {
@@ -65,6 +68,10 @@ public class EventService {
         if (event.getTicketsSold() > 0) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Event has sold tickets, move it to WRAP instead of deleting");
+        }
+        if (sponsorRepository.existsByEventId(id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "This event has sponsor contracts. Remove them in Sponsors & Partners first.");
         }
         eventRepository.delete(event);
     }
