@@ -1,0 +1,161 @@
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 76px;
+  min-height: 76px;
+  box-sizing: border-box;
+
+  padding: 12px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  background: var(--t-090909);
+  border-bottom: 1px solid var(--t-303030);
+  z-index: 110;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.header-title h2 {
+  margin: 0;
+  color: var(--t-f5f5f5);
+  font-size: 19px;
+  font-weight: 650;
+}
+
+.header-title p {
+  margin: 5px 0 0;
+  color: var(--t-a1a1aa);
+  font-size: 12px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.notification-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--t-bfc0c2);
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.notification-btn:hover {
+  color: var(--t-c9a45c);
+  border-color: var(--t-806a27);
+}
+
+.notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--t-c9a45c);
+}
+
+.mobile-menu {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--t-c9a45c);
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .top-header {
+    padding: 12px 18px;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-header {
+    padding: 10px 12px;
+  }
+
+  .header-left {
+    gap: 9px;
+  }
+
+  .header-title h2 {
+    font-size: 15px;
+  }
+
+  .header-title p {
+    font-size: 11px;
+  }
+}
+/* Production / Vendor CRM switch */
+
+.crm-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--t-121212);
+  border: 1px solid var(--t-303030);
+  border-radius: 10px;
+}
+
+.crm-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 7px;
+  color: var(--t-a1a1aa);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.crm-tab:hover {
+  color: var(--t-f5f5f5);
+}
+
+.crm-tab.active {
+  color: var(--t-17130b);
+  background: linear-gradient(90deg, var(--t-d5b23e), var(--t-e4c34e));
+}
+
+@media (max-width: 640px) {
+  .crm-tab {
+    padding: 8px 10px;
+  }
+
+  .crm-tab span {
+    display: none;
+  }
+}

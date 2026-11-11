@@ -1,0 +1,235 @@
+
+.location-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--t-000000-800);
+  backdrop-filter: blur(5px);
+}
+
+.location-modal {
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--t-171717);
+  border: 1px solid var(--t-383838);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px var(--t-000000-500-s);
+}
+
+.location-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 24px;
+  border-bottom: 1px solid var(--t-303030);
+}
+
+.location-modal-eyebrow {
+  color: var(--t-d6b23e);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.location-modal-header h2 {
+  margin: 8px 0;
+  color: var(--t-f5f5f5);
+  font-size: 21px;
+}
+
+.location-modal-header p {
+  margin: 0;
+  color: var(--t-a1a1aa);
+  font-size: 12px;
+}
+
+.location-modal-close {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t-a1a1aa);
+  background: var(--t-252525);
+  border: 1px solid var(--t-383838);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.location-modal-close:hover {
+  color: var(--t-e8ca68);
+  border-color: var(--t-d6b23e);
+}
+
+.location-modal-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 24px;
+}
+
+.location-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.location-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.location-form-group label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--t-d4d4d8);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.location-form-group label svg {
+  color: var(--t-d6b23e);
+}
+
+.location-form-group input,
+.location-form-group select,
+.location-form-group textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 13px;
+  color: var(--t-f5f5f5);
+  background: var(--t-101010);
+  border: 1px solid var(--t-353535);
+  border-radius: 7px;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  transition: border-color 0.2s;
+}
+
+.location-form-group input:focus,
+.location-form-group select:focus,
+.location-form-group textarea:focus {
+  border-color: var(--t-d6b23e);
+}
+
+.location-form-group input::placeholder,
+.location-form-group textarea::placeholder {
+  color: var(--t-71717a);
+}
+
+.location-form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.location-form-group select {
+  cursor: pointer;
+}
+
+.location-form-group input:disabled,
+.location-form-group select:disabled,
+.location-form-group textarea:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.location-map-link {
+  color: var(--t-e8ca68);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.location-map-link:hover {
+  text-decoration: underline;
+}
+
+.location-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 24px;
+  border-top: 1px solid var(--t-303030);
+}
+
+.location-cancel-btn,
+.location-save-btn {
+  padding: 11px 19px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.location-cancel-btn {
+  color: var(--t-d4d4d8);
+  background: var(--t-252525);
+  border: 1px solid var(--t-3a3a3a);
+}
+
+.location-cancel-btn:hover {
+  background: var(--t-303030);
+}
+
+.location-save-btn {
+  color: var(--t-111111);
+  background: var(--t-d6b23e);
+  border: 1px solid var(--t-d6b23e);
+}
+
+.location-save-btn:hover {
+  background: var(--t-e8ca68);
+}
+
+@media (max-width: 600px) {
+  .location-modal-overlay {
+    padding: 10px;
+  }
+
+  .location-modal {
+    max-height: 95vh;
+  }
+
+  .location-modal-header,
+  .location-modal-body {
+    padding: 17px;
+  }
+
+  .location-modal-body {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .location-form-group.full-width {
+    grid-column: auto;
+  }
+
+  .location-modal-footer {
+    padding: 15px 17px;
+  }
+}
+
+.location-modal-error {
+  margin: 0 24px 4px;
+  padding: 10px 14px;
+  border: 1px solid var(--t-dc5050-350);
+  border-radius: 7px;
+  background: var(--t-dc5050-080);
+  color: var(--t-f1a0a0);
+  font-size: 12px;
+}
+
+.location-save-btn:disabled,
+.location-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

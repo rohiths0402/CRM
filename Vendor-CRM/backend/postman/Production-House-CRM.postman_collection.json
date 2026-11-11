@@ -1,0 +1,3589 @@
+{
+  "info": {
+    "name": "Production House CRM API",
+    "description": "Spring Boot backend for the Production House CRM.\n\n1. Set baseUrl (default http://localhost:5000/api).\n2. Run Auth > Register, then Auth > Login. Login saves the token used by every other request.\n3. Users & Access adds production-only or vendor-only logins (admin only). All logins share the admin's records.\n4. Each module's Create saves the new record's id for Get/Update and the Cleanup folder.\n\nLeave email empty to get a fresh address on each Register. For the password reset, run Forgot password, put the 6-digit code in the otp variable, then run Verify OTP and Reset password.\n\nErrors are always {\"message\": \"...\"}, plus \"errors\": {field: message} for validation failures.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "fullName",
+      "value": "Test User"
+    },
+    {
+      "key": "company",
+      "value": "Test Films"
+    },
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": "Secret@123"
+    },
+    {
+      "key": "newPassword",
+      "value": "NewSecret@456"
+    },
+    {
+      "key": "otp",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "expenseId",
+      "value": ""
+    },
+    {
+      "key": "taskId",
+      "value": ""
+    },
+    {
+      "key": "teamMemberId",
+      "value": ""
+    },
+    {
+      "key": "paymentId",
+      "value": ""
+    },
+    {
+      "key": "contractId",
+      "value": ""
+    },
+    {
+      "key": "locationId",
+      "value": ""
+    },
+    {
+      "key": "scheduleId",
+      "value": ""
+    },
+    {
+      "key": "castCrewId",
+      "value": ""
+    },
+    {
+      "key": "projectId",
+      "value": ""
+    },
+    {
+      "key": "productionHouseId",
+      "value": ""
+    },
+    {
+      "key": "memberEmail",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "vendorId",
+      "value": ""
+    },
+    {
+      "key": "quotationId",
+      "value": ""
+    },
+    {
+      "key": "purchaseOrderId",
+      "value": ""
+    },
+    {
+      "key": "vendorInvoiceId",
+      "value": ""
+    },
+    {
+      "key": "vendorPaymentId",
+      "value": ""
+    },
+    {
+      "key": "vendorDocumentId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"{{fullName}}\",\n  \"company\": \"{{company}}\",\n  \"email\": \"{{email}}\",\n  \"mobile\": \"9876543210\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Password: 8+ characters with an uppercase letter, a lowercase letter, a number and a special character."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Uses a fresh email when the email variable is empty, so the collection can be run repeatedly.",
+                  "if (!pm.variables.get(\"email\")) {",
+                  "    pm.collectionVariables.set(\"email\", `user${Date.now()}@example.com`);",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"rememberMe\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Saves the JWT to the token variable; every other request sends it as a Bearer token."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"token\", pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot password (send OTP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Always returns the same message. A new code can be requested every 60 seconds."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-otp"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Skipped until the otp variable is set."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"otp\")) {",
+                  "    console.log(\"Set the otp collection variable to the code from the email (or the backend log with MAIL_LOG_ONLY=true).\");",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\",\n  \"password\": \"{{newPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "Skipped until the otp variable is set. On success the password variable is updated."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.variables.get(\"otp\")) {",
+                  "    console.log(\"Set the otp collection variable to the code from the email (or the backend log with MAIL_LOG_ONLY=true).\");",
+                  "    pm.execution.skipRequest();",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set(\"password\", pm.variables.get(\"newPassword\"));",
+                  "pm.collectionVariables.set(\"otp\", \"\");"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users & Access (admin only)",
+      "description": "Only the account that signed up (the workspace admin) can call these. Everyone the admin adds shares the admin's records. access is ALL (both CRMs), PRODUCTION or VENDOR.",
+      "item": [
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Vani Vendor\",\n  \"email\": \"{{memberEmail}}\",\n  \"mobile\": \"9876543210\",\n  \"access\": \"VENDOR\",\n  \"password\": \"Vendor@1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "The new user signs in with this email and password; they can change it with Forgot password."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// A fresh email each run, so the collection can be run repeatedly.",
+                  "pm.collectionVariables.set(\"memberEmail\", `member${Date.now()}@example.com`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"userId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Change access",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Vani Vendor\",\n  \"mobile\": \"9876543210\",\n  \"access\": \"ALL\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Takes effect on the user's next request; they don't need to sign in again."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Production Houses",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/production-houses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "production-houses"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/production-houses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "production-houses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyName\": \"Sun Pictures\",\n  \"contactPerson\": \"Manager\",\n  \"email\": \"contact@sunpictures.in\",\n  \"phone\": \"9876543210\",\n  \"location\": \"Chennai, Tamil Nadu\",\n  \"website\": \"\",\n  \"status\": \"Active\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"productionHouseId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/production-houses/{{productionHouseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "production-houses",
+                "{{productionHouseId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/production-houses/{{productionHouseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "production-houses",
+                "{{productionHouseId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyName\": \"Sun Pictures\",\n  \"contactPerson\": \"Manager\",\n  \"email\": \"contact@sunpictures.in\",\n  \"phone\": \"9876543210\",\n  \"location\": \"Chennai, Tamil Nadu\",\n  \"website\": \"\",\n  \"status\": \"Inactive\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "OTT Projects",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ott-projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ott-projects"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ott-projects",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ott-projects"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"The Last Kingdom\",\n  \"platform\": \"Netflix\",\n  \"projectType\": \"Web Series\",\n  \"genre\": \"Thriller\",\n  \"language\": \"Tamil\",\n  \"startDate\": \"2026-01-01\",\n  \"endDate\": \"2027-03-30\",\n  \"budget\": 50000000,\n  \"projectManager\": \"Arun Kumar\",\n  \"status\": \"In Progress\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"projectId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ott-projects/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ott-projects",
+                "{{projectId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ott-projects/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ott-projects",
+                "{{projectId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"The Last Kingdom\",\n  \"platform\": \"Netflix\",\n  \"projectType\": \"Web Series\",\n  \"genre\": \"Thriller\",\n  \"language\": \"Tamil\",\n  \"startDate\": \"2026-01-01\",\n  \"endDate\": \"2027-03-30\",\n  \"budget\": 50000000,\n  \"projectManager\": \"Arun Kumar\",\n  \"status\": \"Completed\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cast & Crew",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cast-crew",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cast-crew"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cast-crew",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cast-crew"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Arjun Kumar\",\n  \"role\": \"Actor\",\n  \"email\": \"arjun@example.com\",\n  \"phone\": \"+91 9876543210\",\n  \"experience\": \"8 Years\",\n  \"location\": \"Chennai\",\n  \"status\": \"Available\",\n  \"project\": \"The Last Kingdom\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"castCrewId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cast-crew/{{castCrewId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cast-crew",
+                "{{castCrewId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cast-crew/{{castCrewId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cast-crew",
+                "{{castCrewId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Arjun Kumar\",\n  \"role\": \"Actor\",\n  \"email\": \"arjun@example.com\",\n  \"phone\": \"+91 9876543210\",\n  \"experience\": \"8 Years\",\n  \"location\": \"Chennai\",\n  \"status\": \"On Project\",\n  \"project\": \"The Last Kingdom\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Production Schedules",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/schedules",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "schedules"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/schedules",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "schedules"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Night shoot\",\n  \"project\": \"The Last Kingdom\",\n  \"date\": \"2026-12-15\",\n  \"startTime\": \"22:00\",\n  \"endTime\": \"02:00\",\n  \"endsNextDay\": true,\n  \"location\": \"Chennai Film City\",\n  \"crew\": \"Arjun Kumar\",\n  \"status\": \"Planned\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"scheduleId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/schedules/{{scheduleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "schedules",
+                "{{scheduleId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/schedules/{{scheduleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "schedules",
+                "{{scheduleId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Night shoot\",\n  \"project\": \"The Last Kingdom\",\n  \"date\": \"2026-12-15\",\n  \"startTime\": \"22:00\",\n  \"endTime\": \"02:00\",\n  \"endsNextDay\": true,\n  \"location\": \"Chennai Film City\",\n  \"crew\": \"Arjun Kumar\",\n  \"status\": \"Completed\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shooting Locations",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/locations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "locations"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/locations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "locations"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Film City\",\n  \"type\": \"Studio\",\n  \"address\": \"Taramani\",\n  \"city\": \"Chennai\",\n  \"state\": \"Tamil Nadu\",\n  \"mapUrl\": \"\",\n  \"rentalCost\": 25000,\n  \"project\": \"The Last Kingdom\",\n  \"contactPerson\": \"Ramesh\",\n  \"contactPhone\": \"9876543210\",\n  \"status\": \"Approved\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"locationId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/locations/{{locationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "locations",
+                "{{locationId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/locations/{{locationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "locations",
+                "{{locationId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Film City\",\n  \"type\": \"Studio\",\n  \"address\": \"Taramani\",\n  \"city\": \"Chennai\",\n  \"state\": \"Tamil Nadu\",\n  \"mapUrl\": \"\",\n  \"rentalCost\": 30000,\n  \"project\": \"The Last Kingdom\",\n  \"contactPerson\": \"Ramesh\",\n  \"contactPhone\": \"9876543210\",\n  \"status\": \"Approved\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Expenses",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/expenses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expenses"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/expenses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expenses"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"title\": \"Location advance\",\n  \"vendor\": \"Green Valley\",\n  \"category\": \"Location\",\n  \"date\": \"2026-10-24\",\n  \"amount\": 85000,\n  \"status\": \"Pending\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"expenseId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/expenses/{{expenseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expenses",
+                "{{expenseId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/expenses/{{expenseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expenses",
+                "{{expenseId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"title\": \"Location advance\",\n  \"vendor\": \"Green Valley\",\n  \"category\": \"Location\",\n  \"date\": \"2026-10-24\",\n  \"amount\": 85000,\n  \"status\": \"Paid\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Budgets",
+      "item": [
+        {
+          "name": "Summary (all projects)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/budgets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "budgets"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Summary (one project)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/budgets?projectId={{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "budgets"
+              ],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Contracts",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contracts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contracts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lead Actor Agreement\",\n  \"type\": \"Artist\",\n  \"party\": \"Arjun Kumar\",\n  \"project\": \"The Last Kingdom\",\n  \"startDate\": \"2026-10-01\",\n  \"endDate\": \"2027-03-30\",\n  \"value\": 1500000,\n  \"paymentTerms\": \"50/50\",\n  \"status\": \"Draft\",\n  \"document\": \"actor-agreement.pdf\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"contractId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lead Actor Agreement\",\n  \"type\": \"Artist\",\n  \"party\": \"Arjun Kumar\",\n  \"project\": \"The Last Kingdom\",\n  \"startDate\": \"2026-10-01\",\n  \"endDate\": \"2027-03-30\",\n  \"value\": 1500000,\n  \"paymentTerms\": \"50/50\",\n  \"status\": \"Active\",\n  \"document\": \"actor-agreement.pdf\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Team Members",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/team-members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team-members"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/team-members",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team-members"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rahul Sharma\",\n  \"role\": \"Director\",\n  \"department\": \"Direction\",\n  \"email\": \"rahul@example.com\",\n  \"phone\": \"9876543210\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"teamMemberId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/team-members/{{teamMemberId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team-members",
+                "{{teamMemberId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/team-members/{{teamMemberId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team-members",
+                "{{teamMemberId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rahul Sharma\",\n  \"role\": \"Creative Director\",\n  \"department\": \"Direction\",\n  \"email\": \"rahul@example.com\",\n  \"phone\": \"9876543210\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Finalize schedule\",\n  \"description\": \"\",\n  \"project\": \"The Last Kingdom\",\n  \"assignee\": \"Rahul Sharma\",\n  \"department\": \"Direction\",\n  \"priority\": \"High\",\n  \"status\": \"In Progress\",\n  \"startDate\": \"2026-10-25\",\n  \"dueDate\": \"2026-11-02\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"taskId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{taskId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{taskId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Finalize schedule\",\n  \"description\": \"\",\n  \"project\": \"The Last Kingdom\",\n  \"assignee\": \"Rahul Sharma\",\n  \"department\": \"Direction\",\n  \"priority\": \"High\",\n  \"status\": \"Completed\",\n  \"startDate\": \"2026-10-25\",\n  \"dueDate\": \"2026-11-02\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lead Actor Advance\",\n  \"party\": \"Arjun Kumar\",\n  \"project\": \"The Last Kingdom\",\n  \"direction\": \"Outgoing\",\n  \"type\": \"Artist Payment\",\n  \"amount\": 500000,\n  \"paymentDate\": \"\",\n  \"dueDate\": \"2026-10-15\",\n  \"method\": \"Bank Transfer\",\n  \"reference\": \"\",\n  \"status\": \"Pending\",\n  \"notes\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"paymentId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/payments/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "{{paymentId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lead Actor Advance\",\n  \"party\": \"Arjun Kumar\",\n  \"project\": \"The Last Kingdom\",\n  \"direction\": \"Outgoing\",\n  \"type\": \"Artist Payment\",\n  \"amount\": 500000,\n  \"paymentDate\": \"2026-10-14\",\n  \"dueDate\": \"2026-10-15\",\n  \"method\": \"Bank Transfer\",\n  \"reference\": \"UTR123456\",\n  \"status\": \"Completed\",\n  \"notes\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Full replace: send every field, not just the changed ones."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Vendor CRM",
+      "description": "Needs a login with ALL or VENDOR access. Records link by numeric id: vendorId, quotationId, purchaseOrderId, invoiceId. Each Create saves its id for the requests after it.",
+      "item": [
+        {
+          "name": "Dashboard & lookups",
+          "item": [
+            {
+              "name": "Vendor dashboard",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "dashboard"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Project names (for dropdowns)",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/projects",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "projects"
+                  ]
+                },
+                "description": "OTT project names. Vendor-only logins can't read /ott-projects, so the forms use this."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Vendors",
+          "item": [
+            {
+              "name": "List",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/vendors",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "vendors"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/vendors",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "vendors"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Prime Lights Rentals\",\n  \"category\": \"Camera & Lighting\",\n  \"contactPerson\": \"Ravi\",\n  \"email\": \"ravi@primelights.in\",\n  \"phone\": \"9876543210\",\n  \"city\": \"Chennai\",\n  \"address\": \"\",\n  \"gstNumber\": \"33ABCDE1234F1Z5\",\n  \"panNumber\": \"ABCDE1234F\",\n  \"bankName\": \"HDFC Bank\",\n  \"accountNumber\": \"123456789012\",\n  \"ifscCode\": \"HDFC0001234\",\n  \"paymentTerms\": \"Net 30\",\n  \"rating\": 4,\n  \"status\": \"Active\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"vendorId\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/vendors/{{vendorId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "vendors",
+                    "{{vendorId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/vendors/{{vendorId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "vendors",
+                    "{{vendorId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Prime Lights Rentals\",\n  \"category\": \"Camera & Lighting\",\n  \"contactPerson\": \"Ravi\",\n  \"email\": \"ravi@primelights.in\",\n  \"phone\": \"9876543210\",\n  \"city\": \"Chennai\",\n  \"address\": \"\",\n  \"gstNumber\": \"33ABCDE1234F1Z5\",\n  \"panNumber\": \"ABCDE1234F\",\n  \"bankName\": \"HDFC Bank\",\n  \"accountNumber\": \"123456789012\",\n  \"ifscCode\": \"HDFC0001234\",\n  \"paymentTerms\": \"Net 30\",\n  \"rating\": 5,\n  \"status\": \"Active\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Full replace: send every field, not just the changed ones."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Quotations",
+          "item": [
+            {
+              "name": "List",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/quotations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "quotations"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/quotations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "quotations"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"project\": \"The Last Kingdom\",\n  \"title\": \"Lighting package, 20 days\",\n  \"description\": \"\",\n  \"requestDate\": \"2026-11-01\",\n  \"validUntil\": \"2026-11-30\",\n  \"amount\": 400000,\n  \"taxPercent\": 18,\n  \"status\": \"Received\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"quotationId\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/quotations/{{quotationId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "quotations",
+                    "{{quotationId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/quotations/{{quotationId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "quotations",
+                    "{{quotationId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"project\": \"The Last Kingdom\",\n  \"title\": \"Lighting package, 20 days\",\n  \"description\": \"\",\n  \"requestDate\": \"2026-11-01\",\n  \"validUntil\": \"2026-12-15\",\n  \"amount\": 400000,\n  \"taxPercent\": 18,\n  \"status\": \"Received\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Full replace: send every field, not just the changed ones."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Purchase Orders",
+          "item": [
+            {
+              "name": "List",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/purchase-orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "purchase-orders"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/purchase-orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "purchase-orders"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"quotationId\": \"{{quotationId}}\",\n  \"project\": \"The Last Kingdom\",\n  \"title\": \"Lighting package, 20 days\",\n  \"description\": \"\",\n  \"orderDate\": \"2026-11-02\",\n  \"deliveryDate\": \"2026-11-10\",\n  \"amount\": 400000,\n  \"taxPercent\": 18,\n  \"status\": \"Issued\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"purchaseOrderId\", pm.response.json().id);",
+                      "pm.test(\"Has a PO number\", () => pm.expect(pm.response.json().poNumber).to.match(/^PO-/));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/purchase-orders/{{purchaseOrderId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "purchase-orders",
+                    "{{purchaseOrderId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/purchase-orders/{{purchaseOrderId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "purchase-orders",
+                    "{{purchaseOrderId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"quotationId\": \"{{quotationId}}\",\n  \"project\": \"The Last Kingdom\",\n  \"title\": \"Lighting package, 20 days\",\n  \"description\": \"\",\n  \"orderDate\": \"2026-11-02\",\n  \"deliveryDate\": \"2026-11-10\",\n  \"amount\": 400000,\n  \"taxPercent\": 18,\n  \"status\": \"Delivered\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Full replace: send every field, not just the changed ones."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Invoices",
+          "item": [
+            {
+              "name": "List",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/invoices",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "invoices"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/invoices",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "invoices"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"purchaseOrderId\": \"{{purchaseOrderId}}\",\n  \"invoiceNumber\": \"PL/2026/118\",\n  \"invoiceDate\": \"2026-11-05\",\n  \"dueDate\": \"2026-12-05\",\n  \"amount\": 400000,\n  \"taxAmount\": 72000,\n  \"status\": \"Approved\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"vendorInvoiceId\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/invoices/{{vendorInvoiceId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "invoices",
+                    "{{vendorInvoiceId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/invoices/{{vendorInvoiceId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "invoices",
+                    "{{vendorInvoiceId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"purchaseOrderId\": \"{{purchaseOrderId}}\",\n  \"invoiceNumber\": \"PL/2026/118\",\n  \"invoiceDate\": \"2026-11-05\",\n  \"dueDate\": \"2026-12-10\",\n  \"amount\": 400000,\n  \"taxAmount\": 72000,\n  \"status\": \"Approved\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Full replace: send every field, not just the changed ones."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Payments",
+          "item": [
+            {
+              "name": "List",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "payments"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "payments"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"invoiceId\": \"{{vendorInvoiceId}}\",\n  \"amount\": 200000,\n  \"paymentDate\": \"2026-11-10\",\n  \"method\": \"Bank Transfer\",\n  \"reference\": \"UTR88123\",\n  \"status\": \"Completed\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"vendorPaymentId\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Invoice after payment",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/invoices/{{vendorInvoiceId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "invoices",
+                    "{{vendorInvoiceId}}"
+                  ]
+                },
+                "description": "paidAmount, balance and the Paid / Partially Paid status follow the completed payments."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                      "const inv = pm.response.json();",
+                      "pm.test(\"Invoice is part-paid\", () => {",
+                      "    pm.expect(inv.status).to.eql(\"Partially Paid\");",
+                      "    pm.expect(inv.paidAmount).to.eql(200000);",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/payments/{{vendorPaymentId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "payments",
+                    "{{vendorPaymentId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/payments/{{vendorPaymentId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "payments",
+                    "{{vendorPaymentId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"invoiceId\": \"{{vendorInvoiceId}}\",\n  \"amount\": 200000,\n  \"paymentDate\": \"2026-11-10\",\n  \"method\": \"Bank Transfer\",\n  \"reference\": \"UTR88124\",\n  \"status\": \"Completed\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Full replace: send every field, not just the changed ones."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Documents",
+          "item": [
+            {
+              "name": "List",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/documents",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "documents"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/documents",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "documents"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"type\": \"Insurance\",\n  \"title\": \"Liability cover\",\n  \"documentNumber\": \"POL-7781\",\n  \"issueDate\": \"2026-01-01\",\n  \"expiryDate\": \"2026-12-31\",\n  \"fileName\": \"liability-cover.pdf\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                      "pm.collectionVariables.set(\"vendorDocumentId\", pm.response.json().id);"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/documents/{{vendorDocumentId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "documents",
+                    "{{vendorDocumentId}}"
+                  ]
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/vendor/documents/{{vendorDocumentId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "vendor",
+                    "documents",
+                    "{{vendorDocumentId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vendorId\": \"{{vendorId}}\",\n  \"type\": \"Insurance\",\n  \"title\": \"Liability cover\",\n  \"documentNumber\": \"POL-7782\",\n  \"issueDate\": \"2026-01-01\",\n  \"expiryDate\": \"2026-12-31\",\n  \"fileName\": \"liability-cover.pdf\",\n  \"notes\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Full replace: send every field, not just the changed ones."
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cleanup (deletes, in a safe order)",
+      "description": "Deletes the records created above. Expenses must go before their project, and tasks before their assignee. Vendor records go payment → invoice → order → quotation → vendor.",
+      "item": [
+        {
+          "name": "Delete Vendor payment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendor/payments/{{vendorPaymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendor",
+                "payments",
+                "{{vendorPaymentId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Vendor invoice",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendor/invoices/{{vendorInvoiceId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendor",
+                "invoices",
+                "{{vendorInvoiceId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Purchase order",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendor/purchase-orders/{{purchaseOrderId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendor",
+                "purchase-orders",
+                "{{purchaseOrderId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Quotation",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendor/quotations/{{quotationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendor",
+                "quotations",
+                "{{quotationId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Vendor document",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendor/documents/{{vendorDocumentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendor",
+                "documents",
+                "{{vendorDocumentId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Vendor",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vendor/vendors/{{vendorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vendor",
+                "vendors",
+                "{{vendorId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Expense",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/expenses/{{expenseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expenses",
+                "{{expenseId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tasks",
+                "{{taskId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Team member",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/team-members/{{teamMemberId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "team-members",
+                "{{teamMemberId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Payment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments/{{paymentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Contract",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Location",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/locations/{{locationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "locations",
+                "{{locationId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Schedule",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/schedules/{{scheduleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "schedules",
+                "{{scheduleId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Cast & crew member",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cast-crew/{{castCrewId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cast-crew",
+                "{{castCrewId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete OTT project",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ott-projects/{{projectId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ott-projects",
+                "{{projectId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Production house",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/production-houses/{{productionHouseId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "production-houses",
+                "{{productionHouseId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

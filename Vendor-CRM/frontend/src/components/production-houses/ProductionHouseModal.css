@@ -1,0 +1,32 @@
+
+/* Form validation styles */
+
+.form-field input.input-error,
+.form-field select.input-error,
+.form-field textarea.input-error {
+  border-color: var(--t-ef6464);
+}
+
+.form-field input.input-error:focus,
+.form-field textarea.input-error:focus {
+  border-color: var(--t-ef6464);
+  box-shadow: 0 0 0 2px var(--t-ef6464-120-s);
+}
+
+.field-error {
+  color: var(--t-ff7777);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.modal-close-btn:hover {
+  color: var(--t-d6b23e);
+  border-color: var(--t-d6b23e);
+}
+
+.form-field input:disabled,
+.form-field select:disabled,
+.form-field textarea:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}

@@ -1,0 +1,7 @@
+Vendor-CRM/frontend/node_modules/
+Vendor-CRM/frontend/.idea/vcs.xml
+Vendor-CRM/frontend/.idea/
+Vendor-CRM/frontend/dist/
+Vendor-CRM/backend/mvnw
+Vendor-CRM/backend/mvnw.cmd
+Vendor-CRM/backend/.mvn/wrapper/maven-wrapper.properties

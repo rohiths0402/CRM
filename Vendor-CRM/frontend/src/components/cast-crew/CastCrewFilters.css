@@ -1,0 +1,83 @@
+
+.cast-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 18px;
+  flex-wrap: wrap;
+}
+
+.cast-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 220px;
+  padding: 0 14px;
+  height: 43px;
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 8px;
+  color: var(--t-a1a1aa);
+}
+
+.cast-search-box:focus-within {
+  border-color: var(--t-d6b23e);
+}
+
+.cast-search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--t-f5f5f5);
+  font-size: 13px;
+}
+
+.cast-search-box input::placeholder {
+  color: var(--t-77777f);
+}
+
+.cast-filter-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 43px;
+  padding: 0 12px;
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 8px;
+  color: var(--t-a1a1aa);
+}
+
+.cast-filter-select select {
+  min-width: 125px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--t-f5f5f5);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cast-filter-select select option {
+  background: var(--t-171717);
+  color: var(--t-f5f5f5);
+}
+
+@media (max-width: 600px) {
+  .cast-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cast-search-box,
+  .cast-filter-select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cast-filter-select select {
+    flex: 1;
+  }
+}

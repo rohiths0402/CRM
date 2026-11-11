@@ -1,0 +1,235 @@
+.production-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 11px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--t-444444) var(--t-171717);
+}
+
+.production-table-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.production-table-wrapper::-webkit-scrollbar-track {
+  background: var(--t-171717);
+}
+
+.production-table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--t-444444);
+  border-radius: 10px;
+}
+
+.production-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.production-table th {
+  padding: 15px 15px;
+  color: var(--t-a5a5ad);
+  background: var(--t-202020);
+  border-bottom: 1px solid var(--t-383838);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.production-table td {
+  padding: 14px 15px;
+  color: var(--t-ceced3);
+  border-bottom: 1px solid var(--t-292929);
+  font-size: 12px;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: background 0.18s ease;
+}
+
+.production-table tbody tr {
+  transition: background 0.18s ease;
+}
+
+.production-table tbody tr:hover {
+  background: var(--t-d6b23e-045);
+}
+
+.production-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Company cell */
+
+.company-cell {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 195px;
+}
+
+.company-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  color: var(--t-dfbf50);
+  background: var(--t-d6b23e-100);
+  border: 1px solid var(--t-d6b23e-170);
+  border-radius: 10px;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.production-table tbody tr:hover .company-icon {
+  background: var(--t-d6b23e-170);
+  transform: scale(1.04);
+}
+
+.company-cell strong,
+.company-cell span {
+  display: block;
+}
+
+.company-cell strong {
+  max-width: 210px;
+  overflow: hidden;
+  color: var(--t-f4f4f5);
+  font-size: 12px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+}
+
+.company-cell span {
+  max-width: 210px;
+  overflow: hidden;
+  color: var(--t-888891);
+  font-size: 10px;
+  text-overflow: ellipsis;
+}
+
+/* Status */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.status-badge::before {
+  width: 6px;
+  height: 6px;
+  content: "";
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-badge.active {
+  color: var(--t-82d6a0);
+  background: var(--t-267e46-170);
+  border: 1px solid var(--t-5bb87a-150);
+}
+
+.status-badge.inactive {
+  color: var(--t-b3b3bc);
+  background: var(--t-292929);
+  border: 1px solid var(--t-3a3a3a);
+}
+
+/* Actions */
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.table-actions button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  color: var(--t-b9b9c0);
+  background: var(--t-252525);
+  border: 1px solid var(--t-393939);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.table-actions button:hover {
+  color: var(--t-e5c354);
+  background: var(--t-292410);
+  border-color: var(--t-b99a37);
+  transform: translateY(-2px);
+}
+
+.table-actions button:active {
+  transform: translateY(0) scale(0.94);
+}
+
+.table-actions button.delete-action:hover {
+  color: var(--t-ff8585);
+  background: var(--t-962828-170);
+  border-color: var(--t-a84646);
+}
+
+/* Empty state */
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 245px;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--t-a1a1aa);
+  background: var(--t-171717);
+  border: 1px dashed var(--t-414141);
+  border-radius: 12px;
+}
+
+.empty-state svg {
+  color: var(--t-d6b23e);
+  opacity: 0.9;
+}
+
+.empty-state h3 {
+  margin: 14px 0 7px;
+  color: var(--t-f5f5f5);
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.empty-state p {
+  max-width: 320px;
+  margin: 0;
+  color: var(--t-92929b);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Keyboard accessibility */
+
+.table-actions button:focus-visible {
+  outline: 2px solid var(--t-d6b23e);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .production-table {
+    min-width: 900px;
+  }
+}

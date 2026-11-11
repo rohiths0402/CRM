@@ -1,0 +1,194 @@
+
+.ott-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--t-000000-820);
+  backdrop-filter: blur(4px);
+}
+
+.ott-project-modal {
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+  background: var(--t-171717);
+  border: 1px solid var(--t-383838);
+  border-radius: 13px;
+}
+
+.ott-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.ott-modal-header span {
+  color: var(--t-d6b23e);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.ott-modal-header h2 {
+  margin: 6px 0 0;
+  color: var(--t-f5f5f5);
+  font-size: 20px;
+}
+
+.ott-modal-close {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  color: var(--t-aaaaaa);
+  background: var(--t-252525);
+  border: 1px solid var(--t-383838);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.ott-modal-close:hover {
+  color: var(--t-d6b23e);
+  border-color: var(--t-d6b23e);
+}
+
+.ott-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.ott-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ott-form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.ott-form-field label {
+  color: var(--t-d4d4d8);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ott-form-field input,
+.ott-form-field select,
+.ott-form-field textarea {
+  width: 100%;
+  min-height: 41px;
+  padding: 10px 11px;
+  color: var(--t-f5f5f5);
+  background: var(--t-101010);
+  border: 1px solid var(--t-383838);
+  border-radius: 7px;
+  outline: none;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.ott-form-field textarea {
+  resize: vertical;
+}
+
+.ott-form-field input:focus,
+.ott-form-field select:focus,
+.ott-form-field textarea:focus {
+  border-color: var(--t-d6b23e);
+}
+
+.ott-form-field select option {
+  color: var(--t-f5f5f5);
+  background: var(--t-171717);
+}
+
+.ott-form-field input:disabled,
+.ott-form-field select:disabled,
+.ott-form-field textarea:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.ott-form-field .input-error {
+  border-color: var(--t-ef6464);
+}
+
+.ott-field-error {
+  color: var(--t-ff7777);
+  font-size: 11px;
+}
+
+.ott-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--t-303030);
+}
+
+.ott-cancel-btn {
+  padding: 11px 17px;
+  color: var(--t-d4d4d8);
+  background: var(--t-252525);
+  border: 1px solid var(--t-383838);
+  border-radius: 7px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ott-cancel-btn:hover {
+  border-color: var(--t-a1a1aa);
+}
+
+.ott-save-btn {
+  padding: 11px 18px;
+  font-size: 12px;
+}
+
+@media (max-width: 550px) {
+  .ott-project-modal {
+    padding: 18px;
+  }
+
+  .ott-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ott-form-field.full-width {
+    grid-column: auto;
+  }
+
+  .ott-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .ott-modal-footer button {
+    width: 100%;
+  }
+}
+
+.ott-submit-error {
+  margin-top: 18px;
+  padding: 11px 14px;
+  color: var(--t-ff9999);
+  background: var(--t-ff7777-080);
+  border: 1px solid var(--t-603030);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.ott-save-btn:disabled,
+.ott-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

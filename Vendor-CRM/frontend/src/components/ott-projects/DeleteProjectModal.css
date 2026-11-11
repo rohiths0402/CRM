@@ -1,0 +1,130 @@
+
+.ott-delete-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--t-000000-820);
+  backdrop-filter: blur(4px);
+}
+
+.ott-delete-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 30px;
+  background: var(--t-171717);
+  border: 1px solid var(--t-383838);
+  border-radius: 13px;
+  text-align: center;
+}
+
+.ott-delete-close {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--t-aaaaaa);
+  background: var(--t-252525);
+  border: 1px solid var(--t-383838);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.ott-delete-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 18px;
+  color: var(--t-ff7777);
+  background: var(--t-351b1b);
+  border: 1px solid var(--t-603030);
+  border-radius: 50%;
+}
+
+.ott-delete-modal h2 {
+  margin: 0 0 12px;
+  color: var(--t-f5f5f5);
+  font-size: 19px;
+}
+
+.ott-delete-modal p {
+  color: var(--t-a1a1aa);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.ott-delete-modal p strong {
+  color: var(--t-f5f5f5);
+}
+
+.ott-delete-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.ott-delete-cancel,
+.ott-delete-confirm {
+  min-width: 115px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 16px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ott-delete-cancel {
+  color: var(--t-d4d4d8);
+  background: var(--t-252525);
+  border: 1px solid var(--t-383838);
+}
+
+.ott-delete-confirm {
+  color: var(--t-ffffff);
+  background: var(--t-b83232);
+  border: 1px solid var(--t-b83232);
+}
+
+.ott-delete-confirm:hover {
+  background: var(--t-d13d3d);
+}
+
+@media (max-width: 480px) {
+  .ott-delete-actions {
+    flex-direction: column-reverse;
+  }
+
+  .ott-delete-cancel,
+  .ott-delete-confirm {
+    width: 100%;
+  }
+}
+
+.ott-delete-error {
+  margin: 0 0 16px;
+  padding: 11px 14px;
+  color: var(--t-ff9999);
+  background: var(--t-ff7777-080);
+  border: 1px solid var(--t-603030);
+  border-radius: 8px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.ott-delete-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

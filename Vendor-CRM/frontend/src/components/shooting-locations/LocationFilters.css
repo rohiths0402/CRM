@@ -1,0 +1,120 @@
+
+.location-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.location-search-box {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  height: 43px;
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 8px;
+  color: var(--t-a1a1aa);
+}
+
+.location-search-box:focus-within {
+  border-color: var(--t-d6b23e);
+}
+
+.location-search-box input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  color: var(--t-f5f5f5);
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 12px;
+}
+
+.location-search-box input::placeholder {
+  color: var(--t-71717a);
+}
+
+.location-filter-select {
+  height: 43px;
+  min-width: 145px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 8px;
+  color: var(--t-d6b23e);
+}
+
+.location-filter-select select {
+  width: 100%;
+  height: 100%;
+  color: var(--t-d4d4d8);
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.location-filter-select select option {
+  color: var(--t-f5f5f5);
+  background: var(--t-171717);
+}
+
+.location-filter-reset {
+  height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 13px;
+  color: var(--t-d6b23e);
+  background: var(--t-25200d);
+  border: 1px solid var(--t-4a3d16);
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.location-filter-reset:hover {
+  color: var(--t-111111);
+  background: var(--t-d6b23e);
+}
+
+@media (max-width: 768px) {
+  .location-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .location-search-box {
+    grid-column: 1 / -1;
+  }
+
+  .location-filter-select {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .location-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .location-search-box {
+    grid-column: auto;
+  }
+
+  .location-filter-reset {
+    width: 100%;
+  }
+}

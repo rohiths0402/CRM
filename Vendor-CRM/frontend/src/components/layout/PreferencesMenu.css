@@ -1,0 +1,166 @@
+/* Colours are theme variables from styles/theme.css. */
+
+.prefs {
+  position: relative;
+}
+
+.prefs-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--t-303030);
+  border-radius: 9px;
+  background: var(--t-171717);
+  color: var(--t-bfc0c2);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.prefs-button:hover,
+.prefs-button.open {
+  color: var(--t-d6b23e);
+  border-color: var(--t-806a27);
+}
+
+.prefs-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 290px;
+  max-width: calc(100vw - 24px);
+  padding: 6px 16px;
+  border: 1px solid var(--t-303030);
+  border-radius: 12px;
+  background: var(--t-171717);
+  box-shadow: 0 18px 45px var(--t-000000-500-s);
+  z-index: 200;
+}
+
+.prefs-panel section {
+  padding: 12px 0;
+}
+
+.prefs-panel section + section {
+  border-top: 1px solid var(--t-303030);
+}
+
+.prefs-panel h4 {
+  margin: 0 0 10px;
+  color: var(--t-f5f5f5);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.prefs-theme {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--t-303030);
+  border-radius: 10px;
+  background: var(--t-121212);
+}
+
+.prefs-theme button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--t-a1a1aa);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.prefs-theme button:hover {
+  color: var(--t-f5f5f5);
+}
+
+.prefs-theme button.active {
+  color: var(--t-17130b);
+  background: linear-gradient(90deg, var(--t-d5b23e), var(--t-e4c34e));
+}
+
+.prefs-note {
+  margin: 8px 0 0;
+  color: var(--t-a1a1aa);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.prefs-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 9px 14px;
+  border: 1px solid var(--t-806a27);
+  border-radius: 8px;
+  background: var(--t-d6b23e-100);
+  color: var(--t-d6b23e);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.prefs-action:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.prefs-spin {
+  animation: prefs-spin 0.9s linear infinite;
+}
+
+@keyframes prefs-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.prefs-result {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.prefs-result p {
+  margin: 0;
+  color: var(--t-a1a1aa);
+}
+
+.prefs-result.error p {
+  color: var(--t-e87575);
+}
+
+.prefs-link {
+  margin-top: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--t-d6b23e);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .prefs-button span {
+    display: none;
+  }
+
+  .prefs-button {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+}

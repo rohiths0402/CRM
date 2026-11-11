@@ -1,0 +1,191 @@
+.vd-header-btn {
+  text-decoration: none;
+}
+
+.vd-stat-sub {
+  display: block;
+  margin-top: 4px;
+  color: var(--t-85858d);
+  font-size: 11.5px;
+}
+
+.vd-stat-sub.alert {
+  color: var(--t-e87575);
+}
+
+.vd-loading {
+  padding: 40px;
+  color: var(--t-85858d);
+  text-align: center;
+  font-size: 13px;
+}
+
+.vd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.vd-panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--t-29292e);
+  border-radius: 10px;
+  background: var(--t-141417);
+}
+
+.vd-panel.wide {
+  grid-column: 1 / -1;
+}
+
+.vd-panel.wide .rp-table th {
+  background: transparent;
+}
+
+.vd-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.vd-panel-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--t-f4f4f4);
+}
+
+.vd-panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.vd-empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 18px 0;
+  color: var(--t-85858d);
+  font-size: 13px;
+}
+
+/* Quotation pipeline */
+
+.vd-pipeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+.vd-pipeline-step {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 12px;
+  border: 1px solid var(--t-29292e);
+  border-radius: 8px;
+  background: var(--t-0f0f12);
+}
+
+.vd-pipeline-step strong {
+  color: var(--t-d6b23e);
+  font-size: 24px;
+}
+
+.vd-pipeline-step span {
+  color: var(--t-e4e4e7);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vd-pipeline-step small {
+  color: var(--t-75757d);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* Lists */
+
+.vd-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vd-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--t-222226);
+  font-size: 13px;
+}
+
+.vd-list li:last-child {
+  border-bottom: none;
+}
+
+.vd-list li > div {
+  min-width: 0;
+}
+
+.vd-list-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.vd-small {
+  font-size: 12px;
+}
+
+/* Spend bars */
+
+.vd-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.vd-bar-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+  color: var(--t-d4d4d8);
+  font-size: 12.5px;
+}
+
+.vd-bar-label span:last-child {
+  color: var(--t-f4f4f4);
+  font-weight: 600;
+}
+
+.vd-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--t-222226);
+  overflow: hidden;
+}
+
+.vd-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--t-a88927), var(--t-e4c34e));
+}
+
+@media (max-width: 1000px) {
+  .vd-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

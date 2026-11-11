@@ -1,0 +1,150 @@
+
+.ott-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--t-303030);
+  border-radius: 9px;
+}
+
+.ott-project-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ott-project-table th {
+  padding: 14px 13px;
+  color: var(--t-a1a1aa);
+  background: var(--t-1c1c1c);
+  border-bottom: 1px solid var(--t-303030);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ott-project-table td {
+  padding: 13px;
+  color: var(--t-d4d4d8);
+  border-bottom: 1px solid var(--t-292929);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.ott-project-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ott-project-table tbody tr:hover {
+  background: var(--t-191919);
+}
+
+.ott-project-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ott-project-icon {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  color: var(--t-d6b23e);
+  background: var(--t-29230f);
+  border: 1px solid var(--t-4b3d16);
+  border-radius: 8px;
+}
+
+.ott-project-name strong {
+  display: block;
+  color: var(--t-f5f5f5);
+  font-size: 12px;
+}
+
+.ott-project-name span {
+  display: block;
+  margin-top: 4px;
+  color: var(--t-888888);
+  font-size: 10px;
+}
+
+.ott-status-badge {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.ott-status-badge.planning {
+  color: var(--t-e8ca68);
+  background: var(--t-332b13);
+}
+
+.ott-status-badge.in-progress {
+  color: var(--t-77b9f7);
+  background: var(--t-142a3b);
+}
+
+.ott-status-badge.completed {
+  color: var(--t-76d5a1);
+  background: var(--t-153323);
+}
+
+.ott-status-badge.on-hold {
+  color: var(--t-f2a36f);
+  background: var(--t-382316);
+}
+
+.ott-table-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.ott-table-actions button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  color: var(--t-a1a1aa);
+  background: var(--t-222222);
+  border: 1px solid var(--t-383838);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ott-table-actions button:hover {
+  color: var(--t-d6b23e);
+  border-color: var(--t-d6b23e);
+}
+
+.ott-table-actions button.ott-delete-action:hover {
+  color: var(--t-ff7777);
+  border-color: var(--t-ff7777);
+}
+
+.ott-empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 50px 15px;
+  color: var(--t-a1a1aa);
+  text-align: center;
+}
+
+.ott-empty-state svg {
+  margin-bottom: 12px;
+  color: var(--t-d6b23e);
+}
+
+.ott-empty-state h3 {
+  margin: 0 0 7px;
+  color: var(--t-f5f5f5);
+  font-size: 15px;
+}
+
+.ott-empty-state p {
+  margin: 0;
+  font-size: 12px;
+}

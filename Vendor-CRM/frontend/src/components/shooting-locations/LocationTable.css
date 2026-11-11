@@ -1,0 +1,189 @@
+
+.location-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 12px;
+}
+
+.location-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+}
+
+.location-table thead {
+  background: var(--t-111111);
+}
+
+.location-table th {
+  padding: 16px;
+  text-align: left;
+  color: var(--t-a1a1aa);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  border-bottom: 1px solid var(--t-303030);
+}
+
+.location-table td {
+  padding: 16px;
+  color: var(--t-e5e5e5);
+  font-size: 13px;
+  border-bottom: 1px solid var(--t-292929);
+}
+
+.location-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.location-table tbody tr:hover {
+  background: var(--t-202020);
+}
+
+.location-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.location-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--t-d6b23e);
+  background: var(--t-25200d);
+  border-radius: 9px;
+}
+
+.location-name-cell h4 {
+  margin: 0 0 5px;
+  color: var(--t-f5f5f5);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.location-name-cell span {
+  color: var(--t-a1a1aa);
+  font-size: 11px;
+}
+
+.location-type,
+.location-project {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--t-c4c4c4);
+  white-space: nowrap;
+}
+
+.location-address {
+  max-width: 190px;
+  color: var(--t-a1a1aa);
+  line-height: 1.5;
+}
+
+.location-cost {
+  color: var(--t-e8ca68) !important;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.location-status {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.location-status.approved {
+  color: var(--t-4ade80);
+  background: var(--t-12351f);
+}
+
+.location-status.pending {
+  color: var(--t-facc15);
+  background: var(--t-3b3010);
+}
+
+.location-status.rejected {
+  color: var(--t-f87171);
+  background: var(--t-3b1717);
+}
+
+.location-status.available {
+  color: var(--t-bfc0c2);
+  background: var(--t-292929);
+}
+
+.location-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.location-actions button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t-a1a1aa);
+  background: var(--t-222222);
+  border: 1px solid var(--t-353535);
+  border-radius: 7px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.location-actions button:hover {
+  color: var(--t-e8ca68);
+  border-color: var(--t-d6b23e);
+}
+
+.location-actions .location-delete-action:hover {
+  color: var(--t-f87171);
+  border-color: var(--t-f87171);
+}
+
+.location-empty-state {
+  padding: 55px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--t-a1a1aa);
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.location-empty-state svg {
+  margin-bottom: 14px;
+  color: var(--t-d6b23e);
+}
+
+.location-empty-state h3 {
+  margin: 0 0 8px;
+  color: var(--t-f5f5f5);
+  font-size: 16px;
+}
+
+.location-empty-state p {
+  margin: 0;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .location-table th,
+  .location-table td {
+    padding: 13px;
+  }
+}

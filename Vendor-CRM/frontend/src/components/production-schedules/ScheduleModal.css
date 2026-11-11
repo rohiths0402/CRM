@@ -1,0 +1,256 @@
+
+.schedule-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--t-000000-780);
+  backdrop-filter: blur(5px);
+}
+
+.schedule-modal {
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--t-171717);
+  border: 1px solid var(--t-383838);
+  border-radius: 14px;
+  color: var(--t-f5f5f5);
+  box-shadow: 0 20px 70px var(--t-000000-500-s);
+}
+
+.schedule-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  border-bottom: 1px solid var(--t-303030);
+}
+
+.schedule-modal-eyebrow {
+  color: var(--t-d6b23e);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.schedule-modal-header h2 {
+  margin: 9px 0 5px;
+  font-size: 22px;
+}
+
+.schedule-modal-header p {
+  margin: 0;
+  color: var(--t-a1a1aa);
+  font-size: 12px;
+}
+
+.schedule-modal-close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--t-383838);
+  border-radius: 8px;
+  background: var(--t-222222);
+  color: var(--t-f5f5f5);
+  cursor: pointer;
+}
+
+.schedule-modal-close:hover {
+  color: var(--t-d6b23e);
+  border-color: var(--t-d6b23e);
+}
+
+.schedule-modal-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 24px;
+}
+
+.schedule-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.schedule-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.schedule-form-group label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--t-c5c5c5);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.schedule-form-group label svg {
+  color: var(--t-d6b23e);
+}
+
+.schedule-form-group input,
+.schedule-form-group select,
+.schedule-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid var(--t-383838);
+  border-radius: 7px;
+  outline: none;
+  background: var(--t-101010);
+  color: var(--t-f5f5f5);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.schedule-form-group input:focus,
+.schedule-form-group select:focus,
+.schedule-form-group textarea:focus {
+  border-color: var(--t-d6b23e);
+}
+
+.schedule-form-group input:disabled,
+.schedule-form-group select:disabled,
+.schedule-form-group textarea:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.schedule-form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.schedule-form-group input::placeholder,
+.schedule-form-group textarea::placeholder {
+  color: var(--t-777777);
+}
+
+.schedule-form-group option {
+  background: var(--t-171717);
+}
+
+.schedule-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 24px;
+  border-top: 1px solid var(--t-303030);
+}
+
+.schedule-cancel-btn,
+.schedule-save-btn {
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.schedule-cancel-btn {
+  border: 1px solid var(--t-383838);
+  background: var(--t-222222);
+  color: var(--t-dddddd);
+}
+
+.schedule-save-btn {
+  border: 1px solid var(--t-d6b23e);
+  background: var(--t-d6b23e);
+  color: var(--t-111111);
+}
+
+.schedule-save-btn:hover {
+  background: var(--t-e8ca68);
+}
+
+@media (max-width: 600px) {
+  .schedule-modal-overlay {
+    padding: 10px;
+  }
+
+  .schedule-modal {
+    max-height: 95vh;
+  }
+
+  .schedule-modal-header,
+  .schedule-modal-body {
+    padding: 18px;
+  }
+
+  .schedule-modal-body {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-form-group.full-width {
+    grid-column: auto;
+  }
+
+  .schedule-modal-footer {
+    padding: 15px 18px;
+  }
+}
+
+
+
+
+.schedule-time-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.schedule-time-picker select {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  padding: 0 10px;
+  border: 1px solid var(--t-303030);
+  border-radius: 7px;
+  background: var(--t-111111);
+  color: var(--t-f5f5f5);
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+.schedule-time-picker select:focus {
+  border-color: var(--t-d6b23e);
+}
+
+.schedule-time-separator {
+  color: var(--t-d6b23e);
+  font-weight: 700;
+}
+
+.schedule-time-picker select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.schedule-modal-error {
+  margin: 0 24px 4px;
+  padding: 10px 14px;
+  border: 1px solid var(--t-dc5050-350);
+  border-radius: 7px;
+  background: var(--t-dc5050-080);
+  color: var(--t-f1a0a0);
+  font-size: 12px;
+}
+
+.schedule-save-btn:disabled,
+.schedule-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,246 @@
+
+.shooting-locations-page {
+  width: 100%;
+  min-width: 0;
+  color: var(--t-f5f5f5);
+}
+
+.shooting-locations-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.shooting-locations-eyebrow {
+  color: var(--t-d6b23e);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.shooting-locations-header h1 {
+  margin: 8px 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.shooting-locations-header p {
+  margin: 0;
+  color: var(--t-a1a1aa);
+  font-size: 13px;
+}
+
+.add-location-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 17px;
+  color: var(--t-111111);
+  background: var(--t-d6b23e);
+  border: 1px solid var(--t-d6b23e);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.add-location-btn:hover {
+  background: var(--t-e8ca68);
+}
+
+.location-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.location-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 19px;
+  background: var(--t-171717);
+  border: 1px solid var(--t-303030);
+  border-radius: 11px;
+}
+
+.location-stat-icon {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.location-stat-icon.gold {
+  color: var(--t-e8ca68);
+  background: var(--t-30280f);
+}
+
+.location-stat-icon.green {
+  color: var(--t-4ade80);
+  background: var(--t-12351f);
+}
+
+.location-stat-icon.yellow {
+  color: var(--t-facc15);
+  background: var(--t-3b3010);
+}
+
+.location-stat-icon.silver {
+  color: var(--t-bfc0c2);
+  background: var(--t-292929);
+}
+
+.location-stat-card span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--t-a1a1aa);
+  font-size: 11px;
+}
+
+.location-stat-card h3 {
+  margin: 0;
+  color: var(--t-f5f5f5);
+  font-size: 21px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.shooting-locations-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  background: var(--t-111111);
+  border: 1px solid var(--t-303030);
+  border-radius: 12px;
+}
+
+.location-content-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.location-content-heading h2 {
+  margin: 0 0 6px;
+  color: var(--t-f5f5f5);
+  font-size: 16px;
+}
+
+.location-content-heading p {
+  margin: 0;
+  color: var(--t-a1a1aa);
+  font-size: 12px;
+}
+
+@media (max-width: 1100px) {
+  .location-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .shooting-locations-header {
+    align-items: flex-start;
+  }
+
+  .shooting-locations-header h1 {
+    font-size: 22px;
+  }
+
+  .shooting-locations-content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shooting-locations-header {
+    flex-direction: column;
+  }
+
+  .add-location-btn {
+    width: 100%;
+  }
+
+  .location-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .location-stat-card {
+    padding: 15px;
+  }
+
+  .location-stat-card h3 {
+    font-size: 19px;
+  }
+
+  .shooting-locations-content {
+    padding: 12px;
+  }
+}
+
+.locations-api-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  border: 1px solid var(--t-dc5050-350);
+  border-radius: 10px;
+  background: var(--t-dc5050-080);
+  color: var(--t-f1a0a0);
+  font-size: 13px;
+}
+
+.locations-api-error button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid var(--t-d6b23e);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--t-d6b23e);
+  cursor: pointer;
+}
+
+.locations-api-error button:disabled,
+.add-location-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.locations-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 180px;
+  color: var(--t-a1a1aa);
+  font-size: 13px;
+}
+
+.locations-loading-icon {
+  color: var(--t-d6b23e);
+  animation: locations-spin 1s linear infinite;
+}
+
+@keyframes locations-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
