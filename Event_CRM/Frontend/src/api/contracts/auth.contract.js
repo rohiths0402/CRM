@@ -14,7 +14,7 @@ export const authContract = {
         name: "string",
         email: "string",
         phone: "string",
-        role: "ADMIN | OPS_LEAD | SPONSOR_MGR | GATE_STAFF",
+        role: "SUPER_ADMIN | ADMIN | EMPLOYEE | OPS_LEAD | SPONSOR_MGR | GATE_STAFF",
         employeeId: "string",
       },
     },
@@ -38,7 +38,7 @@ export const authContract = {
       name: "string",
       email: "string",
       phone: "string",
-      role: "ADMIN | OPS_LEAD | SPONSOR_MGR | GATE_STAFF",
+      role: "SUPER_ADMIN | ADMIN | EMPLOYEE | OPS_LEAD | SPONSOR_MGR | GATE_STAFF",
       employeeId: "string",
     },
     errors: {

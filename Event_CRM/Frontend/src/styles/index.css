@@ -38,8 +38,8 @@
   --color-accent: var(--accent);
   --color-line: var(--line);
   --color-on-primary: var(--on-primary);
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Times New Roman", Times, serif;
+  --font-display: "Times New Roman", Times, serif;
   --animate-marquee: marquee 38s linear infinite;
   --animate-float: float 7s ease-in-out infinite;
 }

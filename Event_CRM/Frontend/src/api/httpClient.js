@@ -17,7 +17,12 @@ const request = async (path, { method = "GET", body } = {}) => {
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.message || "Something went wrong. Please try again.");
+    const error = new Error(
+      data.message || "Something went wrong. Please try again.",
+    );
+    error.code = data.code;
+    error.data = data;
+    throw error;
   }
 
   return data;

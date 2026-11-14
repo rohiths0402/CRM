@@ -5,11 +5,14 @@ import { MOCK_OTP, mockDelay, mockUsers } from "../../mocks/mockData";
 
 const TOKEN_PREFIX = "mock-token-";
 
-const withoutPassword = ({ password, ...user }) => user;
+const withoutPassword = (user) =>
+  Object.fromEntries(
+    Object.entries(user).filter(([key]) => key !== "password"),
+  );
 
-const buildSession = (user) => ({
-  token: `${TOKEN_PREFIX}${user.id}`,
-  user: withoutPassword(user),
+const buildSession = (user, role = user.role) => ({
+  token: `${TOKEN_PREFIX}${user.id}-${role}`,
+  user: { ...withoutPassword(user), role },
 });
 
 const cleanIdentifier = (value) =>
@@ -37,7 +40,14 @@ const login = async ({ email, password, rememberMe }) => {
 
 const loginAsRole = async (role) => {
   await mockDelay(500);
-  return buildSession(mockUsers.find((user) => user.role === role));
+  const fallbackRole = {
+    SUPER_ADMIN: "ADMIN",
+    EMPLOYEE: "GATE_STAFF",
+  }[role];
+  const user = mockUsers.find((item) => item.role === role) ||
+    mockUsers.find((item) => item.role === fallbackRole);
+  if (!user) throw new Error(`No demo account is configured for ${role}`);
+  return buildSession(user, role);
 };
 
 const googleLogin = async () => {
@@ -52,10 +62,11 @@ const googleLogin = async () => {
 const getCurrentUser = async () => {
   if (!USE_MOCK) return http.get(ENDPOINTS.auth.me);
   await mockDelay(300);
-  const id = Number(getToken()?.replace(TOKEN_PREFIX, ""));
+  const [idValue, role] = getToken()?.replace(TOKEN_PREFIX, "").split("-") || [];
+  const id = Number(idValue);
   const user = mockUsers.find((item) => item.id === id);
   if (!user) throw new Error("Session expired");
-  return withoutPassword(user);
+  return withoutPassword(role ? { ...user, role } : user);
 };
 
 const logout = async () => {

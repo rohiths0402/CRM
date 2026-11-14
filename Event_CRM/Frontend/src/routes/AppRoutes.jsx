@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import LandingPage from "../pages/Landing/LandingPage";
 import LoginPage from "../pages/Login/LoginPage";
 import DashboardPage from "../pages/Dashboard/DashboardPage";
 import EventsPage from "../pages/Events/EventsPage";
@@ -7,24 +6,16 @@ import VenuesPage from "../pages/Venues/VenuesPage";
 import TicketingPage from "../pages/Ticketing/TicketingPage";
 import SponsorsPage from "../pages/Sponsors/SponsorsPage";
 import LineupPage from "../pages/Lineup/LineupPage";
-import ModulePlaceholderPage from "../pages/ModulePlaceholder/ModulePlaceholderPage";
+import GatePage from "../pages/Gate/GatePage";
+import ProposalsPage from "../pages/Proposals/ProposalsPage";
+import FinancialsPage from "../pages/Financials/FinancialsPage";
+import CrewPage from "../pages/Crew/CrewPage";
+import ProfilePage from "../pages/Profile/ProfilePage";
+import SystemSettingsPage from "../pages/Settings/SettingsPage";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestRoute from "./GuestRoute";
-import { MODULES } from "../constants/modules";
 import { ROLE_ACCESS } from "../constants/roles";
-
-const builtModules = [
-  "dashboard",
-  "events",
-  "venues",
-  "ticketing",
-  "sponsors",
-  "artists",
-];
-const placeholderModules = MODULES.filter(
-  (item) => !builtModules.includes(item.key),
-);
 
 const rolesFor = (moduleKey) =>
   Object.entries(ROLE_ACCESS)
@@ -33,7 +24,7 @@ const rolesFor = (moduleKey) =>
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<LandingPage />} />
+    <Route path="/" element={<Navigate to="/login" replace />} />
 
     <Route element={<GuestRoute />}>
       <Route path="/login" element={<LoginPage />} />
@@ -65,17 +56,37 @@ const AppRoutes = () => (
           <Route path="/artists" element={<LineupPage />} />
         </Route>
 
-        {placeholderModules.map((item) => (
-          <Route
-            key={item.key}
-            path={item.path}
-            element={<ModulePlaceholderPage />}
-          />
-        ))}
+        <Route element={<ProtectedRoute allowedRoles={rolesFor("gate")} />}>
+          <Route path="/gate" element={<GatePage />} />
+        </Route>
+
+        <Route
+          element={<ProtectedRoute allowedRoles={rolesFor("proposals")} />}
+        >
+          <Route path="/proposals" element={<ProposalsPage />} />
+        </Route>
+
+        <Route
+          element={<ProtectedRoute allowedRoles={rolesFor("financials")} />}
+        >
+          <Route path="/financials" element={<FinancialsPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={rolesFor("crew")} />}>
+          <Route path="/crew" element={<CrewPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={rolesFor("profile")} />}>
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute allowedRoles={rolesFor("settings")} />}>
+          <Route path="/settings" element={<SystemSettingsPage />} />
+        </Route>
       </Route>
     </Route>
 
-    <Route path="*" element={<Navigate to="/" replace />} />
+    <Route path="*" element={<Navigate to="/login" replace />} />
   </Routes>
 );
 

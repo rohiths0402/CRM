@@ -8,6 +8,9 @@ export const ROLE_LABELS = {
   SUPER_ADMIN: "Super Admin",
   ADMIN: "Admin",
   EMPLOYEE: "Employee",
+  OPS_LEAD: "Operations Lead",
+  SPONSOR_MGR: "Sponsor Manager",
+  GATE_STAFF: "Gate Staff",
 };
 
 export const ROLE_ACCESS = {
@@ -39,4 +42,26 @@ export const ROLE_ACCESS = {
     "profile",
   ],
   EMPLOYEE: ["dashboard", "gate", "profile"],
+  OPS_LEAD: [
+    "dashboard",
+    "events",
+    "venues",
+    "ticketing",
+    "sponsors",
+    "artists",
+    "gate",
+    "proposals",
+    "financials",
+    "crew",
+    "profile",
+  ],
+  SPONSOR_MGR: [
+    "dashboard",
+    "events",
+    "sponsors",
+    "proposals",
+    "financials",
+    "profile",
+  ],
+  GATE_STAFF: ["dashboard", "gate", "profile"],
 };

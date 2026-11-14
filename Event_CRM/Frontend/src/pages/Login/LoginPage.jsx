@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft,
   Eye,
   EyeOff,
   Lock,
@@ -11,7 +10,6 @@ import {
   Ticket,
   Users,
 } from "lucide-react";
-import { FcGoogle } from "react-icons/fc";
 import Button from "../../components/common/Button";
 import InputField from "../../components/common/InputField";
 import Logo from "../../components/common/Logo";
@@ -116,13 +114,7 @@ const LoginPage = () => {
 
         <main className="relative flex flex-col bg-elevated p-6 sm:p-10 lg:p-14">
           <div className="flex items-center justify-between">
-            <Link
-              to="/"
-              className="flex items-center gap-2 text-sm font-medium text-muted transition hover:text-foreground"
-            >
-              {/* <ArrowLeft className="size-4" />
-              Back to home */}
-            </Link>
+            <span />
             <ThemeToggle />
           </div>
 

@@ -5,3 +5,4 @@ export { venuesContract } from "./venues.contract";
 export { ticketingContract } from "./ticketing.contract";
 export { sponsorsContract } from "./sponsors.contract";
 export { lineupsContract } from "./lineups.contract";
+export { gateContract } from "./gate.contract";

@@ -10,7 +10,7 @@ const Sidebar = ({ open, onClose }) => {
 
   const items = MODULES.filter(
     (item) =>
-      ROLE_ACCESS[user.role].includes(item.key) &&
+      ROLE_ACCESS[user?.role]?.includes(item.key) &&
       item.key !== "profile" &&
       item.path !== "/profile",
   );

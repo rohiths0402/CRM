@@ -58,4 +58,9 @@ export const ENDPOINTS = {
     riderItems: (id) => `/lineups/${id}/rider-items`,
     riderItem: (id, itemId) => `/lineups/${id}/rider-items/${itemId}`,
   },
+  gate: {
+    summary: (eventId) => `/gate/events/${eventId}/summary`,
+    tickets: "/gate/tickets",
+    checkIn: (ticketId) => `/gate/tickets/${ticketId}/check-in`,
+  },
 };
